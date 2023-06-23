@@ -1,10 +1,15 @@
 import { Box, Button, Container, Input, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form';
 import React, { useState } from 'react'
+import { useRouter } from 'next/router';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('')
   const [senha, setSenha] = useState<string>('')
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/home')
+  };
   return (
     <Box display="flex" width="100%" height="100vh" justifyContent="center"
       alignItems="center"
@@ -37,10 +42,17 @@ export default function Login() {
           console.log(senha);
           setSenha(target.value)
         }} sx={{ margin: "1%", borderRadius: "2%" }}/>
-        <Button>Acessar</Button>
+        <Button
+          onClick={() => handleClick()}
+        >
+          Acessar
+        </Button>
         <Box>
           <Typography variant='body1' component="span" sx={{ fontSize: "10px", color: "red" }}>não tem conta?</Typography>
-          <Button>Cadastrar</Button>
+          <Button
+          >
+            Cadastrar
+          </Button>
         </Box>
       </Box>
     </Box>

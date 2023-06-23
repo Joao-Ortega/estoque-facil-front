@@ -16,7 +16,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // style={{ width: "100%"}}
         className={inter.className}>{children}
       </body>
     </html>
