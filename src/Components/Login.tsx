@@ -3,17 +3,23 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 
 export default function Login() {
-  const [email, setEmail] = useState<string>('')
-  const [senha, setSenha] = useState<string>('')
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const router = useRouter();
   const handleClick = () => {
-    router.push('/home')
+    // const bodyRequest = { email, password };
+    router.push('/home');
   };
   return (
-    <Box display="flex" width="100%" height="100vh" justifyContent="center"
+    <Box
+      display="flex"
+      width="100%"
+      height="100vh"
+      justifyContent="center"
       alignItems="center"
       sx={{ margin: 0 }}>
-      <Box sx={{
+      <Box
+        sx={{
           border: '1px solid black',
           width: "95%",
           height: "60%",
@@ -22,7 +28,7 @@ export default function Login() {
           borderTopLeftRadius: "5%",
           borderTopRightRadius: "1%",
           borderBottomRightRadius: "5%",
-          borderBottomLeftRadius: "1%"
+          borderBottomLeftRadius: "1%",
         }}
         justifyContent="center"
         alignItems="center"
@@ -33,15 +39,15 @@ export default function Login() {
           variant="filled"
           value={ email }
           required
-          onChange={({ target }) => {
-          console.log(email);
-          setEmail(target.value)
-        }} sx={{ margin: "1%", borderRadius: "2%" }}
+          onChange={({ target }) => { setEmail(target.value) }}
+          sx={{ margin: "1%", borderRadius: "2%" }}
         />
-        <TextField id="filled-basic" label="Senha" variant="filled" value={ senha }  onChange={({ target }) => {
-          console.log(senha);
-          setSenha(target.value)
-        }}
+        <TextField
+          id="filled-basic"
+          label="Senha"
+          variant="filled"
+          value={ password }
+          onChange={({ target }) =>  setPassword(target.value) }
         required
         sx={{ margin: "1%", borderRadius: "2%" }}/>
         <Button
@@ -50,11 +56,17 @@ export default function Login() {
           Acessar
         </Button>
         <Box>
-          <Typography variant='body1' component="span" sx={{ fontSize: "10px", color: "red" }}>não tem conta?</Typography>
+          <Typography
+            variant='body1'
+            component="span"
+            sx={{ fontSize: "10px", color: "red" }}
+          >
+            não possuí conta?
+          </Typography>
           <Button
             onClick={() => router.push('/register')}
           >
-            Cadastrar
+            Cadastre-se
           </Button>
         </Box>
       </Box>

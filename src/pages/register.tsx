@@ -53,7 +53,8 @@ export default function Register() {
             onChange={ ({ target }) => {
               target.value = target.value.replace(/\d+/g, "");
               setName(target.value);
-            } } sx={{
+            }}
+            sx={{
             margin: "2% 4%",
             borderRadius: "2%",
             width: "90%",
@@ -65,11 +66,12 @@ export default function Register() {
             variant="filled"
             value={ email }
             required
-            onChange={ ({ target }) => handleChange(setEmail, target.value) } sx={{
-            margin: "2% 4%",
-            borderRadius: "2%",
-            width: "90%",
-          }}
+            onChange={ ({ target }) => handleChange(setEmail, target.value) }
+            sx={{
+              margin: "2% 4%",
+              borderRadius: "2%",
+              width: "90%",
+            }}
           />
           { !validEmail && <Typography variant='body1' component="span" sx={{ fontSize: "10px", color: "red" }}>Email Inválido</Typography> }
           <TextField
