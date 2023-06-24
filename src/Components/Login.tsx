@@ -1,14 +1,25 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
+import requestApi from '../api/axios';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const router = useRouter();
-  const handleClick = () => {
+  // const router = useRouter();
+  const handleClick = async () => {
+    try {
+      const data = await requestApi.post('/login', { email, password })
+      console.log(data);
+    } catch (error) {
+      console.log('error', error)
+      const { message } = error.response.data
+      console.log(message);
+      
+    }
+    
     // const bodyRequest = { email, password };
-    router.push('/home');
+    // router.push('/home');
   };
   return (
     <Box
@@ -51,7 +62,7 @@ export default function Login() {
         required
         sx={{ margin: "1%", borderRadius: "2%" }}/>
         <Button
-          onClick={() => handleClick()}
+          onClick={handleClick}
         >
           Acessar
         </Button>
@@ -64,7 +75,7 @@ export default function Login() {
             não possuí conta?
           </Typography>
           <Button
-            onClick={() => router.push('/register')}
+            // onClick={() => router.push('/register')}
           >
             Cadastre-se
           </Button>
