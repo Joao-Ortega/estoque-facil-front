@@ -1,7 +1,7 @@
 import React from 'react'
 import Login from '../Components/Login'
 
-export default function Home() {
+export default function Index() {
   return (
     <Login />
   )
