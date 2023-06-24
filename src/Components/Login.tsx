@@ -1,5 +1,4 @@
-import { Box, Button, Container, Input, TextField, Typography } from '@mui/material'
-import { useForm } from 'react-hook-form';
+import { Box, Button, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 
@@ -33,6 +32,7 @@ export default function Login() {
           label="Email"
           variant="filled"
           value={ email }
+          required
           onChange={({ target }) => {
           console.log(email);
           setEmail(target.value)
@@ -41,7 +41,9 @@ export default function Login() {
         <TextField id="filled-basic" label="Senha" variant="filled" value={ senha }  onChange={({ target }) => {
           console.log(senha);
           setSenha(target.value)
-        }} sx={{ margin: "1%", borderRadius: "2%" }}/>
+        }}
+        required
+        sx={{ margin: "1%", borderRadius: "2%" }}/>
         <Button
           onClick={() => handleClick()}
         >
@@ -50,6 +52,7 @@ export default function Login() {
         <Box>
           <Typography variant='body1' component="span" sx={{ fontSize: "10px", color: "red" }}>não tem conta?</Typography>
           <Button
+            onClick={() => router.push('/register')}
           >
             Cadastrar
           </Button>
