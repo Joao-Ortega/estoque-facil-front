@@ -1,5 +1,7 @@
-import React, { ReactNode, createContext, useState, useMemo, useContext } from 'react';
-
+import React, { ReactNode, createContext, useState, useMemo, useContext, useEffect } from 'react';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 interface IUserProps {
   children: ReactNode;
 }
@@ -7,26 +9,34 @@ interface IUserProps {
 
 interface IUserContextData {
   user: any;
-  setUser: Function;
+  decodeUser: Function;
 }
 
 export const UserContext = createContext<IUserContextData>({} as IUserContextData);
 
-const UserProvider = ({ children }: IUserProps) => {
+export const UserProvider = ({ children }: IUserProps) => {
   const [user, setUser] = useState<any | null>(null);
-  const userContext = useContext(UserContext);
-  // const values = useMemo(() => ({
-  //   user,
-  //   setUser,
-  // }), [user, setUser]);
+  const decodeUser = (token: string): void => {
+    const decodetoken = jwt.verify(token, `${process.env.SECRET}`)
+    const objectGlobal = {
+      ...decodetoken,
+      token,
+    }
+    setUser(objectGlobal);
+  };
+  
+  const values = useMemo(() => ({
+    user,
+    setUser,
+    decodeUser,
+  }), [user, setUser]);
 
+  console.log('Provider', user);
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={ values }>
       {children}
     </UserContext.Provider>
   );
 };
 
-export const UserInfosProvider = () => UserProvider(UserContext);
-
-export default UserProvider;
+export const UserInfosProvider = () => useContext(UserContext);

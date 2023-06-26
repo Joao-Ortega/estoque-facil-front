@@ -2,24 +2,21 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import requestApi from '../api/axios';
+import { UserInfosProvider } from '../context/UserProvider';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  // const router = useRouter();
+  const router = useRouter();
+  const { decodeUser } = UserInfosProvider();
   const handleClick = async () => {
+    const response = await requestApi.post('/login', { email, password })
     try {
-      const data = await requestApi.post('/login', { email, password })
-      console.log(data);
+      decodeUser(response.data.token);
     } catch (error) {
-      console.log('error', error)
-      const { message } = error.response.data
-      console.log(message);
-      
+      console.log('catch => error', error)
     }
-    
-    // const bodyRequest = { email, password };
-    // router.push('/home');
+    router.push('/home');
   };
   return (
     <Box
@@ -56,11 +53,13 @@ export default function Login() {
         <TextField
           id="filled-basic"
           label="Senha"
+          type="password"
           variant="filled"
           value={ password }
           onChange={({ target }) =>  setPassword(target.value) }
-        required
-        sx={{ margin: "1%", borderRadius: "2%" }}/>
+          required
+          sx={{ margin: "1%", borderRadius: "2%" }}
+        />
         <Button
           onClick={handleClick}
         >
