@@ -1,13 +1,21 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router';
+import requestApi from '../api/axios';
+import { UserInfosProvider } from '../context/UserProvider';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
-  const handleClick = () => {
-    // const bodyRequest = { email, password };
+  const { decodeUser } = UserInfosProvider();
+  const handleClick = async () => {
+    const response = await requestApi.post('/login', { email, password })
+    try {
+      decodeUser(response.data.token);
+    } catch (error) {
+      console.log('catch => error', error)
+    }
     router.push('/home');
   };
   return (
@@ -45,13 +53,15 @@ export default function Login() {
         <TextField
           id="filled-basic"
           label="Senha"
+          type="password"
           variant="filled"
           value={ password }
           onChange={({ target }) =>  setPassword(target.value) }
-        required
-        sx={{ margin: "1%", borderRadius: "2%" }}/>
+          required
+          sx={{ margin: "1%", borderRadius: "2%" }}
+        />
         <Button
-          onClick={() => handleClick()}
+          onClick={handleClick}
         >
           Acessar
         </Button>

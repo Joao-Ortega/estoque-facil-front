@@ -1,15 +1,8 @@
 
-import { Box } from '@mui/material';
+import MainPage from '../Components/MainPage';
+
 export default function Home() {
   return (
-    <Box
-      sx={{
-        backgroundColor: 'red',
-      }}
-      width= "100%"
-      height= "100%"
-    >
-      oi
-    </Box>
+    <MainPage />
   )
 };

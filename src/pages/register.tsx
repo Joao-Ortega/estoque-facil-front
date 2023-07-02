@@ -1,6 +1,8 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import requestApi from '../api/axios';
+import { UserInfosProvider } from '../context/UserProvider';
 
 export default function Register() {
   const [name, setName] = useState<string>('');
@@ -9,17 +11,15 @@ export default function Register() {
   const [validEmail, setValidEmail] = useState<boolean>(true);
   const [disabled, setDisabled] = useState<boolean>(true);
   const router = useRouter();
+  const { decodeUser } = UserInfosProvider();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const regex = /\S+@\S+\.\S+/;
     setValidEmail(regex.test(email));
     if (name.length > 2 && password.length > 4 && regex.test(email)) {
-      // OBJECT PRONTO PARA REQUISIÇÃO
-      // const bodyRequest = {
-      //   name,
-      //   password,
-      //   email,
-      // }
+      const { data } = await requestApi.post('/register', { name, password, email })
+      
+      decodeUser(data.token);
       router.push('/home');
     }
   };
