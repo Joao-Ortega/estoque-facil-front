@@ -1,18 +1,24 @@
 import React, { useEffect } from 'react'
 import { UserInfosProvider } from '../context/UserProvider'
+import Header from './Header';
+import { Box } from '@mui/material';
+import Form from './Form';
 
 const MainPage: React.FC = () => {
   const { user } = UserInfosProvider();
 
-  // useEffect(() => {
-  //   console.log(user);
-  // }, []);
+  useEffect(() => {
+    console.log('page-home', user);
+  }, []);
 
   return (
-    <div>
-      <div>{user && user.name}</div>
-      <div>{user && user.token}</div>
-    </div>
+    <Box>
+      <Header title={ user && user.name } page="home" />
+      <Form />
+      <Box>
+        Pegar o que vem do back para renderizar.
+      </Box>
+    </Box>
   )
 }
 
