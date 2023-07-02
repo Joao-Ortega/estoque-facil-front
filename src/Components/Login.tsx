@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import requestApi from '../api/axios';
 import { UserInfosProvider } from '../context/UserProvider';
 
-export default function Login() {
+const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
@@ -83,3 +83,5 @@ export default function Login() {
     </Box>
   )
 }
+
+export default Login;

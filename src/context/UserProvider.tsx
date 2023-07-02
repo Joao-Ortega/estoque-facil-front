@@ -1,22 +1,16 @@
 import React, { ReactNode, createContext, useState, useMemo, useContext, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { IDecodedToken, IUser, IUserContextData } from '../interfaces/userInterfaces';
 dotenv.config();
 interface IUserProps {
   children: ReactNode;
 }
 
-
-interface IUserContextData {
-  user: any;
-  decodeUser: Function;
-}
-
 export const UserContext = createContext<IUserContextData>({} as IUserContextData);
 
 export const UserProvider = ({ children }: IUserProps) => {
-
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   useEffect(() => {
     const userData = localStorage.getItem('userData');
     if (userData) {
@@ -25,21 +19,17 @@ export const UserProvider = ({ children }: IUserProps) => {
   }, []);
 
   const decodeUser = (token: string): void => {
-    const decodetoken = jwt.verify(token, `${process.env.SECRET}`)
-    const objectGlobal = {
-      ...decodetoken,
-      token,
-    }
-    localStorage.setItem('userData', JSON.stringify({ name: objectGlobal.name, token: objectGlobal.token }));
+    const decodedToken = jwt.verify(token, `${process.env.SECRET}`) as IDecodedToken
+    const objectGlobal = { name: decodedToken.name, token }
+    localStorage.setItem('userData', JSON.stringify(objectGlobal));
     setUser(objectGlobal);
   };
-  console.log('user', user);
   
   const values = useMemo(() => ({
     user,
     setUser,
     decodeUser,
-  }), [user, setUser]);
+  }), [user, setUser]) as IUserContextData;
 
   return (
     <UserContext.Provider value={ values }>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { UserInfosProvider } from '../context/UserProvider'
 
-export default function MainPage() {
+const MainPage: React.FC = () => {
   const { user } = UserInfosProvider();
 
   // useEffect(() => {
@@ -15,3 +15,5 @@ export default function MainPage() {
     </div>
   )
 }
+
+export default MainPage;
