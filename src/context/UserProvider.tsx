@@ -15,15 +15,25 @@ interface IUserContextData {
 export const UserContext = createContext<IUserContextData>({} as IUserContextData);
 
 export const UserProvider = ({ children }: IUserProps) => {
+
   const [user, setUser] = useState<any | null>(null);
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
   const decodeUser = (token: string): void => {
     const decodetoken = jwt.verify(token, `${process.env.SECRET}`)
     const objectGlobal = {
       ...decodetoken,
       token,
     }
+    localStorage.setItem('userData', JSON.stringify({ name: objectGlobal.name, token: objectGlobal.token }));
     setUser(objectGlobal);
   };
+  console.log('user', user);
   
   const values = useMemo(() => ({
     user,
@@ -31,7 +41,6 @@ export const UserProvider = ({ children }: IUserProps) => {
     decodeUser,
   }), [user, setUser]);
 
-  console.log('Provider', user);
   return (
     <UserContext.Provider value={ values }>
       {children}
