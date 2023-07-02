@@ -74,7 +74,7 @@ export default function Login() {
             não possuí conta?
           </Typography>
           <Button
-            // onClick={() => router.push('/register')}
+            onClick={() => router.push('/register')}
           >
             Cadastre-se
           </Button>
