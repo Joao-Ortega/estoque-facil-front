@@ -1,5 +1,5 @@
+import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import requestApi from '../api/axios';
 import { UserInfosProvider } from '../context/UserProvider';
@@ -9,6 +9,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
   const { decodeUser } = UserInfosProvider();
+
   const handleClick = async () => {
     const response = await requestApi.post('/login', { email, password })
     try {
@@ -29,8 +30,8 @@ export default function Login() {
       <Box
         sx={{
           border: '1px solid black',
-          width: "95%",
-          height: "60%",
+          width: "95vw",
+          height: "60vh",
           display: "flex",
           flexDirection: "column",
           borderTopLeftRadius: "5%",

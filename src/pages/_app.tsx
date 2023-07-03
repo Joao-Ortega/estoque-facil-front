@@ -1,11 +1,19 @@
 import React from 'react'
 import { UserProvider } from '../context/UserProvider';
+import Head from 'next/head';
+import { AppProps } from 'next/app';
+import '../app/globals.css';
 
-const App: React.FC = ({ Component, pageProps }) => {
+const App: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
-    <UserProvider>
-      <Component {...pageProps}/>
-    </UserProvider>
+    <>
+      <Head>
+        <title>Estoque Fácil</title>
+      </Head>
+      <UserProvider>
+        <Component {...pageProps}/>
+      </UserProvider>
+    </>
   )
 }
 
