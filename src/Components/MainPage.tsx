@@ -5,20 +5,20 @@ import requestApi from '../api/axios';
 
 const MainPage: React.FC = () => {
   const [listProducts, setListProducts] = useState([]);
-  // const requestListPrododucts = async () => {
-  //   const { token } = JSON.parse(localStorage.getItem('userData') as string);
-  //   // console.log(token);
+  const requestListPrododucts = async () => {
+    const { token } = JSON.parse(localStorage.getItem('userData') as string);
+    // console.log(token);
     
-  //   const response = await requestApi.get('/products', { headers: {
-  //     authorization: token,
-  //   } });
-  //   localStorage.setItem('listProducts', JSON.stringify(response.data.message[0].productsList));
-  //   setListProducts(response.data.message[0].productsList);
-  // };
+    const response = await requestApi.get('/products', { headers: {
+      authorization: token,
+    } });
+    localStorage.setItem('listProducts', JSON.stringify(response.data.message[0].productsList));
+    setListProducts(response.data.message[0].productsList);
+  };
 
-  // useEffect(() => {
-  //   requestListPrododucts();
-  // }, []);
+  useEffect(() => {
+    requestListPrododucts();
+  }, []);
 
   return (
     <Box sx={ { overflowY: 'auto' } }>
