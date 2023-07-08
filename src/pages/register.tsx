@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import requestApi from '../api/axios';
 import { UserInfosProvider } from '../context/UserProvider';
+import '../style/registerPage.css';
 
 export default function Register() {
   const [name, setName] = useState<string>('');
@@ -40,10 +41,22 @@ export default function Register() {
         alignItems: "center",
         flexDirection: "column",
         display: "flex",
-        justifyContent: "space-around",
+        justifyContent: "space-evenly",
       }}
     >
-      <Box>
+      <Box
+        sx={{
+          alignItems: "center",
+          backgroundColor: "rgba(0, 3, 6, 0.7)",
+          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          height: "45vh",
+          justifyContent: "center",
+          margin: ", 0, 0, 0",
+          width: "95vw",
+        }}
+      >
         <TextField
             id="filled-basic"
             label="Apelido"
@@ -57,7 +70,8 @@ export default function Register() {
             sx={{
             margin: "2% 4%",
             borderRadius: "2%",
-            width: "90%",
+            width: "80%",
+            backgroundColor: "rgba(255, 255, 255, 0.7)"
           }}
           />
         <TextField
@@ -70,10 +84,11 @@ export default function Register() {
             sx={{
               margin: "2% 4%",
               borderRadius: "2%",
-              width: "90%",
+              width: "80%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)"
             }}
           />
-          { !validEmail && <Typography variant='body1' component="span" sx={{ fontSize: "10px", color: "red" }}>Email Inválido</Typography> }
+          { !validEmail && <Typography variant='body1' component="span" sx={{ fontSize: "16px", color: "red", fontFamily: 'Kalam, cursive' }}>Email Inválido</Typography> }
           <TextField
             id="filled-basic"
             label="Senha"
@@ -84,12 +99,17 @@ export default function Register() {
             sx={{
               margin: "2% 4%",
               borderRadius: "2%",
-              width: "90%",
+              width: "80%",
+              backgroundColor: "rgba(255, 255, 255, 0.7)"
             }}
           />
       </Box>
       <Button
         disabled={ disabled }
+        sx={{
+          fontFamily: 'Kalam, cursive',
+          }}
+        variant="contained"
         onClick={() => handleClick()}
       >
         Cadastrar
