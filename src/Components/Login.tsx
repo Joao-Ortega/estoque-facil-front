@@ -29,26 +29,26 @@ export default function Login() {
       justifyContent="center"
       alignItems="center"
       sx={{ margin: 0 }}>
-        {/* <Typography
-          color="white"
+        <Typography
           variant='h4'
+          margin="-20% 0 10% 0"
+          className="title"
+          sx={{
+            fontFamily: 'Kalam, cursive', 
+            fontWeight: '1000',
+            textShadow: '1px 1px 1px white',
+          }}
         >
           Estoque Fácil
-        </Typography> */}
+        </Typography>
       <Box
         sx={{
-          backgroundColor: "rgba(0, 3, 6, 0.3)",
-          // background: "grey",
-          // backdropFilter: "blur(1px)",
+          backgroundColor: "rgba(0, 3, 6, 0.7)",
           width: "95vw",
-          height: "60vh",
+          height: "45vh",
           display: "flex",
           flexDirection: "column",
           borderRadius: "10px"
-          // borderTopLeftRadius: "5%",
-          // borderTopRightRadius: "1%",
-          // borderBottomRightRadius: "5%",
-          // borderBottomLeftRadius: "1%",
         }}
         justifyContent="center"
         alignItems="center"
@@ -74,7 +74,7 @@ export default function Login() {
         />
         <Button
           onClick={handleClick}
-          sx={{ margin: "1%", color: "rgba(0, 66, 255, 1)" }}
+          sx={{ margin: "1%", color: "white", fontFamily: 'Kalam, cursive', }}
         >
           Entrar
         </Button>
@@ -82,7 +82,7 @@ export default function Login() {
           <Typography
             variant='body1'
             component="span"
-            sx={{ color: "white" }}
+            sx={{ color: "white", fontFamily: 'Kalam, cursive' }}
           >
             Não possui conta?
           </Typography>
@@ -90,7 +90,7 @@ export default function Login() {
             onClick={() => router.push('/register')}
             color="error"
             // size="small"
-            sx={{ color: "red" }}
+            sx={{ color: "red", fontFamily: 'Kalam, cursive' }}
           >
             Cadastre-se
           </Button>

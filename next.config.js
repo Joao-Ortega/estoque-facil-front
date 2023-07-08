@@ -2,6 +2,7 @@
 const nextConfig = {}
 
 module.exports = {
+  optimizeFonts: false,
   env: {
     SECRET: 'testeSom',
   },
