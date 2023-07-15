@@ -108,6 +108,10 @@ export default function Register() {
         disabled={ disabled }
         sx={{
           fontFamily: 'Kalam, cursive',
+          '&.Mui-disabled': {
+            backgroundColor: '#0000FF',
+            opacity: 0.5,
+          }
           }}
         variant="contained"
         onClick={() => handleClick()}
