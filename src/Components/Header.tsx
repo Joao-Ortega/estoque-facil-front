@@ -23,10 +23,6 @@ const Header: React.FC<Iprops> = ({ title = '', page }: Iprops) => {
   }
 
   return (
-    // <header className="header">
-    //   <h1>{ title !== 'Atualizar perfil' ? `Olá ${title}` : 'Atualizar perfil' }</h1>
-    //   <Button>{ page }</Button>
-    // </header>
     <Box
       sx={{
         backgroundColor: 'black',
