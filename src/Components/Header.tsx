@@ -17,6 +17,11 @@ const Header: React.FC<Iprops> = ({ title = '', page }: Iprops) => {
     setAnchorEl(null);
   };
 
+  const treatNickname = (): string => {
+    const listName = title.split(' ');
+    return `${listName[0][0].toUpperCase()}${listName[1][0].toUpperCase()}`
+  }
+
   return (
     // <header className="header">
     //   <h1>{ title !== 'Atualizar perfil' ? `Olá ${title}` : 'Atualizar perfil' }</h1>
@@ -57,7 +62,7 @@ const Header: React.FC<Iprops> = ({ title = '', page }: Iprops) => {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32, backgroundColor: 'white', color: 'black' }}>{ title[0].toUpperCase() }</Avatar>
+            <Avatar sx={{ width: 35, height: 35, backgroundColor: 'white', color: 'black' }}>{ treatNickname() }</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
