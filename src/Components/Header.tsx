@@ -39,7 +39,7 @@ const Header: React.FC<Iprops> = ({ title = '', page }: Iprops) => {
           textAlign: 'center',
           justifyContent: 'space-evenly',
           // border: '1px solid green',
-          width: '300px'
+          width: '70%'
         }}
       >
         <Typography sx={{ minWidth: 100 }}>Minhas Listas</Typography>
