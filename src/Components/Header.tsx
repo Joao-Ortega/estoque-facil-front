@@ -19,7 +19,8 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
 
   const treatNickname = (): string => {
     const listName = title.split(' ');
-    return `${listName[0][0].toUpperCase()}${listName[1][0].toUpperCase()}`;
+    if (listName.length > 1) return `${listName[0][0].toUpperCase()}${listName[1][0].toUpperCase()}`
+    return `${listName[0][0].toUpperCase()}${listName[0][1].toUpperCase()}`;
   }
 
   return (
