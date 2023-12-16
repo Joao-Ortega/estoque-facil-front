@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Checkbox, List, ListItem, ListItemText } from '@mui/material';
+import { Box, Checkbox, List, ListItem, ListItemText, Typography } from '@mui/material';
 import requestApi from '../api/axios';
+import RenderProduct from './ProductsList';
 
 
 const MainPage: React.FC = () => {
   const [listProducts, setListProducts] = useState([]);
-  const requestListPrododucts = async () => {
+  const requestListProducts = async () => {
     const { token } = JSON.parse(localStorage.getItem('userData') as string);
     // console.log(token);
     
@@ -17,12 +18,15 @@ const MainPage: React.FC = () => {
   };
 
   useEffect(() => {
-    requestListPrododucts();
+    requestListProducts();
   }, []);
 
   return (
     <Box sx={ { overflowY: 'auto' } }>
-      <ul>
+      {listProducts.length ? listProducts.map((product: any, i: number) => (
+        <RenderProduct key={i} product={product} />
+      )) : <Typography>Lista Vazia</Typography>}
+      {/* <ul>
         {listProducts.length === 0 && <p>Lista de compras vazia.</p>}
         {listProducts.length > 0 && (
           <List sx={{ width: '70%', maxWidth: 360, bgcolor: 'background.paper', marginLeft: '3%' }}>
@@ -40,7 +44,7 @@ const MainPage: React.FC = () => {
           ))}
         </List>
         )}
-      </ul>
+      </ul> */}
     </Box>
   )
 }
