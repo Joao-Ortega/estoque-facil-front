@@ -7,7 +7,7 @@ interface Iprops {
   page: string,
 };
 
-const Header: React.FC<Iprops> = ({ title = '', page }: Iprops) => {
+const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -19,7 +19,7 @@ const Header: React.FC<Iprops> = ({ title = '', page }: Iprops) => {
 
   const treatNickname = (): string => {
     const listName = title.split(' ');
-    return `${listName[0][0].toUpperCase()}${listName[1][0].toUpperCase()}`
+    return `${listName[0][0].toUpperCase()}${listName[1][0].toUpperCase()}`;
   }
 
   return (

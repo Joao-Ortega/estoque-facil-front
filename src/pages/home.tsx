@@ -9,7 +9,7 @@ export default function Home() {
   const { user } = UserInfosProvider();
   return (
     <Box sx={ { overflowY: 'auto', height: '100vh' } } >
-      <Header title={ user && user.name } page="home" />
+      <Header title={ user ? user.name : 'P F'} page="home" />
       <MainPage />
     </Box>
   )
