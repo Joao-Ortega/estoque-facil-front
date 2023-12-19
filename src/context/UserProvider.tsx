@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import React, { ReactNode, createContext, useState, useMemo, useContext, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
-import { IDecodedToken, IUser, IUserContextData } from '../interfaces/userInterfaces';
+import { IUser, IUserContextData } from '../interfaces/userInterfaces';
 interface IUserProps {
   children: ReactNode;
 }

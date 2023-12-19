@@ -32,7 +32,7 @@ const MainPage: React.FC = () => {
     return (<Loading size='65px' color='green' />)
   } else {
     return (
-      <Box sx={ { overflowY: 'auto' } }>
+      <Box sx={ { overflowY: 'auto', marginTop: 7.5 } }>
         {listProducts.length ? listProducts.map((product: any, i: number) => (
           <RenderProduct key={i} product={product} />
         )) : <Typography>Lista Vazia</Typography>}

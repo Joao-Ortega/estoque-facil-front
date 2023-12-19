@@ -46,7 +46,10 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
-        height: '8vh'
+        position: 'fixed',
+        top: 0,
+        width: '100vw',
+        height: '8vh',
       }}
     >
       <Box
