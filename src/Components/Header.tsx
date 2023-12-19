@@ -1,5 +1,6 @@
-import { Logout, PersonAdd, Settings } from '@mui/icons-material';
+import { Logout,  } from '@mui/icons-material';
 import { Avatar, Box, Button, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import React from 'react'
 
 interface Iprops {
@@ -9,13 +10,22 @@ interface Iprops {
 
 const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const router = useRouter();
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogOut = () => {
+    handleClose();
+    localStorage.clear();
+    router.push('/');
+  }
 
   const treatNickname = (): string => {
     const listName = title.split(' ');
@@ -50,7 +60,7 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
       <Box
         // sx={{ border: '1px solid red' }}
       >
-        <Tooltip title="Account settings">
+        <Tooltip title="Configurações de Perfil">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -99,13 +109,10 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+          <Avatar sx={{ marginRight: 2 }} /> Perfil
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
@@ -116,12 +123,12 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
             <Settings fontSize="small" />
           </ListItemIcon>
           Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
+        </MenuItem> */}
+        <MenuItem onClick={handleLogOut}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          Logout
+          Sair
         </MenuItem>
       </Menu>
     </Box>
