@@ -21,6 +21,11 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
     setAnchorEl(null);
   };
 
+  const handleProfile = () => {
+    handleClose();
+    router.push('/profile');
+  }
+
   const handleLogOut = () => {
     handleClose();
     localStorage.clear();
@@ -54,8 +59,24 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
           width: '70%'
         }}
       >
-        <Typography sx={{ minWidth: 100 }}>Minhas Listas</Typography>
-        <Typography sx={{ minWidth: 100 }}>Criar Lista</Typography>
+        <Box
+          onClick={() => {
+          if (window.location.pathname !== '/home') {
+            router.push('/home')
+          }
+          }}
+        >
+          <Typography sx={{ minWidth: 100 }}>Minhas Listas</Typography>
+        </Box>
+        <Box
+          onClick={() => {
+            if (window.location.pathname !== '/newList') {
+              router.push('/newList')
+            }
+          }}
+        >
+          <Typography sx={{ minWidth: 100 }}>Criar Lista</Typography>
+        </Box>
       </Box>
       <Box
         // sx={{ border: '1px solid red' }}
@@ -108,7 +129,7 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleProfile}>
           <Avatar sx={{ marginRight: 2 }} /> Perfil
         </MenuItem>
         <Divider />
