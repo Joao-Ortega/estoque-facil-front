@@ -8,7 +8,7 @@ const Create = () => {
   const { user } = UserInfosProvider();
 
   return (
-    <Box sx={ { overflowY: 'auto', height: '100vh', marginTop: 7.5 } }>
+    <Box sx={ { overflowY: 'auto', height: '100vh', marginTop: 8 } }>
       <Header title={ user ? user.name : 'P F'} page="home" />
       <NewList />
     </Box>

@@ -24,11 +24,22 @@ export const UserProvider = ({ children }: IUserProps) => {
     localStorage.setItem('userData', JSON.stringify(objectGlobal));
     setUser(objectGlobal);
   };
+
+  const getPersonalInfos = (token: string): any => {
+    try {
+      const decodedToken = jwt.verify(token, `${process.env.SECRET}`, { algorithms: ['HS256'] }) as any
+      const objectGlobal = { name: decodedToken.name, email: decodedToken.email }
+      return objectGlobal
+    } catch (error) {
+      console.log('error', error)
+    }
+  };
   
   const values = useMemo(() => ({
     user,
     setUser,
     decodeUser,
+    getPersonalInfos
   }), [user, setUser]) as IUserContextData;
 
   return (

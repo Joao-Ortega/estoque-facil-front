@@ -4,6 +4,7 @@ export interface IUserContextData {
   user: IUser;
   setUser: Function;
   decodeUser: Function;
+  getPersonalInfos: Function;
 }
 
 export interface IUser {
