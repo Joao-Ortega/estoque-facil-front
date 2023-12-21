@@ -48,23 +48,36 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
 
   const checkInfosChanged = () => {
     const controlFields = [{email}, {name}, {password}]
+    let fieldsToUpdate = {}
     for (let i = 0; i < disableFields.length; i++) {
       if (!disableFields[i]) {
         const validation = checkInputField(controlFields[i])
         if (validation.error) {
           setErrorOnUpdate(validation)
           setTimeout(() => { setErrorOnUpdate({ error: false, message: '' }) }, 3500)
-          break;
+          return;
         }
+        fieldsToUpdate = { ...fieldsToUpdate, ...controlFields[i] }
       } else continue 
     }
+    return fieldsToUpdate;
+  }
+
+  const isSameInfos = (fields: any): any => {
+    if (fields.email && currentUserInfos?.email === fields.email) {
+      delete fields.email
+    }
+    if (fields.name && currentUserInfos?.name === fields.name) {
+      delete fields.name
+    }
+    return fields
   }
 
   const handleUpdate = () => {
-    checkInfosChanged();
-    // console.log('email', email)
-    // console.log('name', name)
-    // console.log('password', password)
+    const fields = checkInfosChanged();
+    if (fields) {
+      const treatedFields = isSameInfos(fields)
+    }
   }
 
   return (
@@ -79,11 +92,9 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
         <Typography sx={{ minWidth: 70 }}>EMAIL</Typography>
         <EditNote
           onClick={() => {
-            if (disableFields[0]) {
-              const copyState = [...disableFields]
-              copyState[0] = false
-              setDisableFields(copyState)
-            }
+            const copyState = [...disableFields]
+            copyState[0] = !copyState[0]
+            setDisableFields(copyState)
           }}
           fontSize='medium'
           color='info'
@@ -101,11 +112,9 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
         <Typography sx={{ minWidth: 50 }}>APELIDO</Typography>
         <EditNote
           onClick={() => {
-            if (disableFields[1]) {
-              const copyState = [...disableFields]
-              copyState[1] = false
-              setDisableFields(copyState)
-            }
+            const copyState = [...disableFields]
+            copyState[1] = !copyState[1]
+            setDisableFields(copyState)
           }}
           fontSize='medium'
           color='info'
