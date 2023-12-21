@@ -11,6 +11,7 @@ export const UserContext = createContext<IUserContextData>({} as IUserContextDat
 
 export const UserProvider = ({ children }: IUserProps) => {
   const [user, setUser] = useState<IUser | null>(null);
+
   useEffect(() => {
     const userData = localStorage.getItem('userData');
     if (userData) {
@@ -39,7 +40,7 @@ export const UserProvider = ({ children }: IUserProps) => {
     user,
     setUser,
     decodeUser,
-    getPersonalInfos
+    getPersonalInfos,
   }), [user, setUser]) as IUserContextData;
 
   return (

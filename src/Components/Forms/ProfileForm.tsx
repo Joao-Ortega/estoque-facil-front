@@ -5,6 +5,7 @@ import { checkInputField } from '../../functions/user';
 import { EditNote, Visibility, VisibilityOff } from '@mui/icons-material';
 import { IUserInfosDecoded } from '../../interfaces/userInterfaces';
 import { IValidateObj } from '../../interfaces';
+import { updateUser } from '../../api/user';
 
 interface IProfileFormProps {
   isOpen: boolean;
@@ -20,7 +21,7 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
   const [errorOnUpdate, setErrorOnUpdate] = useState<IValidateObj>({ error: false, message: '' });
   const [isInputPasswordFocus, setIsInputPasswordFocus] = useState<boolean>(false);
   const [isEditMode, setEditMode] = useState<boolean>(false);
-  const { user, getPersonalInfos } = UserInfosProvider();
+  const { user, getPersonalInfos, decodeUser } = UserInfosProvider();
 
   // useEffect(() => {
   //   verifyInfos()
@@ -73,10 +74,12 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
     return fields
   }
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const fields = checkInfosChanged();
     if (fields) {
-      const treatedFields = isSameInfos(fields)
+      const treatedFields = isSameInfos(fields);
+      const updated = await updateUser(treatedFields);
+      if (updated.token) decodeUser(updated.token)
     }
   }
 
