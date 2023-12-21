@@ -12,7 +12,6 @@ export default function Login() {
   const { decodeUser } = UserInfosProvider();
 
   const handleClick = async () => {
-    console.log('login', { email, password })
     const response = await requestApi.post('/login', { email, password })
     try {
       decodeUser(response.data.token);

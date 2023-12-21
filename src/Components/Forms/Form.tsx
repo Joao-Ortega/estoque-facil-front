@@ -7,9 +7,6 @@ const Form = () => {
   const [qtdProduct, setQtdProduct] = useState('');
 
   const handleClick = () => {
-    console.log('name', nameProduct);
-    console.log('categoryProduct', categoryProduct);
-    console.log('qtdProduct', qtdProduct);
   };
 
   return (
