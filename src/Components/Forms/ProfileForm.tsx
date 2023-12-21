@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Collapse, TextField, Typography } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, CircularProgress, Collapse, TextField, Typography } from '@mui/material'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UserInfosProvider } from '../../context/UserProvider'
 import { checkInputField } from '../../functions/user';
@@ -9,9 +9,11 @@ import { updateUser } from '../../api/user';
 
 interface IProfileFormProps {
   isOpen: boolean;
+  setIsOpen: Function;
+  setUpdateSuccess: Function;
 }
 
-const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps) => {
+const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdateSuccess }: IProfileFormProps) => {
   const [currentUserInfos, setCurrentUserInfos] = useState<IUserInfosDecoded | null>();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -20,25 +22,19 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
   const [seePass, setSeePass] = useState<boolean>(false);
   const [errorOnUpdate, setErrorOnUpdate] = useState<IValidateObj>({ error: false, message: '' });
   const [isInputPasswordFocus, setIsInputPasswordFocus] = useState<boolean>(false);
-  const [isEditMode, setEditMode] = useState<boolean>(false);
+  const [dataSend, setDataSend] = useState<boolean>(false);
   const { user, getPersonalInfos, decodeUser } = UserInfosProvider();
-
-  // useEffect(() => {
-  //   verifyInfos()
-  // }, [name, email, password]);
 
   useEffect(() => {
     if (!isOpen) {
-      setEditMode(false);
       setDisableFields([true, true, true]);
       setErrorOnUpdate({ error: false, message: '' });
       setSeePass(false);
+      setPassword('');
+    } else {
+      getUserInfos()
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    getUserInfos()
-  }, []);
 
   const getUserInfos = () => {
     const infos = getPersonalInfos(user.token)
@@ -75,12 +71,21 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
   }
 
   const handleUpdate = async () => {
+    setDataSend(true)
     const fields = checkInfosChanged();
     if (fields) {
       const treatedFields = isSameInfos(fields);
       const updated = await updateUser(treatedFields);
-      if (updated.token) decodeUser(updated.token)
+      if (updated.token) {
+        decodeUser(updated.token)
+      }
+    } else {
+      setDataSend(false);
+      return
     }
+    setDataSend(false);
+    setIsOpen(false);
+    setUpdateSuccess(true);
   }
 
   return (
@@ -121,7 +126,6 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
           }}
           fontSize='medium'
           color='info'
-          // sx={{ minWidth: 10 }}
         />
         <TextField
           size='small'
@@ -133,8 +137,6 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
       </Box>
       <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
         <Typography sx={{ minWidth: 70 }}>SENHA</Typography>
-        {/* {seePass && <Visibility sx={{ minWidth: 50 }} onClick={() => setSeePass(false)} />}
-        {!seePass && <VisibilityOff sx={{ minWidth: 50 }} onClick={() => setSeePass(true)} />} */}
         <EditNote
           onClick={() => {
             const copyState = [...disableFields]
@@ -152,7 +154,9 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
           onFocus={() => setIsInputPasswordFocus(true)}
           onBlur={() => setIsInputPasswordFocus(false)}
           InputProps={{
-            endAdornment: seePass ? (<Visibility sx={{ minWidth: 50 }} onClick={() => setSeePass(false)} />) : (<VisibilityOff sx={{ minWidth: 50 }} onClick={() => setSeePass(true)} />)
+            endAdornment: seePass ?
+              (<Visibility sx={{ minWidth: 50 }} onClick={() => setSeePass(false)} />) :
+              (<VisibilityOff sx={{ minWidth: 50 }} onClick={() => setSeePass(true)} />)
           }}
           disabled={disableFields[2]}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
@@ -165,24 +169,13 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen }: IProfileFormProps)
         </Alert>
       </Collapse>
       <Box display='flex' justifyContent='flex-end'>
-        {/* <Button
-          variant='outlined'
-          onClick={() => {
-            if (!isEditMode) {
-              setEditMode(true)
-            }
-          }}
-          sx={{ marginRight: 1 }}
-        >
-          Editar
-        </Button> */}
         <Button
           disabled={!disableFields.some((fieldDisable: boolean) => !fieldDisable)}
           color='success'
           variant='contained'
           onClick={handleUpdate}
         >
-          Salvar
+          { dataSend ? (<CircularProgress sx={{ color: 'white' }} size='30px' />) : 'Salvar' }
         </Button>
       </Box>
       { errorOnUpdate.error && (
