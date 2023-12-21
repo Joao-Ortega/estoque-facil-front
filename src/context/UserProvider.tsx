@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import React, { ReactNode, createContext, useState, useMemo, useContext, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
-import { IUser, IUserContextData } from '../interfaces/userInterfaces';
+import { IUser, IUserContextData, IUserInfosDecoded } from '../interfaces/userInterfaces';
 interface IUserProps {
   children: ReactNode;
 }
@@ -25,7 +25,7 @@ export const UserProvider = ({ children }: IUserProps) => {
     setUser(objectGlobal);
   };
 
-  const getPersonalInfos = (token: string): any => {
+  const getPersonalInfos = (token: string): IUserInfosDecoded | void => {
     try {
       const decodedToken = jwt.verify(token, `${process.env.SECRET}`, { algorithms: ['HS256'] }) as any
       const objectGlobal = { name: decodedToken.name, email: decodedToken.email }

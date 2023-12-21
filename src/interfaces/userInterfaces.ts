@@ -21,3 +21,7 @@ export interface IDecodedToken extends jwt.JwtPayload {
   updatedAt: Date;
 }
 
+export interface IUserInfosDecoded {
+  name: string;
+  email: string;
+}

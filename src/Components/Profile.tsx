@@ -37,7 +37,7 @@ const Profile = () => {
             display='flex'
             sx={{
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              borderRadius: '8px 8px 1px 1px',
+              borderRadius: '8px 8px 2px 2px',
               padding: 1.5,
             }}
           >
@@ -54,7 +54,7 @@ const Profile = () => {
             in={openPersonalInfos}
             timeout={600}
           >
-            <ProfileForm />
+            <ProfileForm isOpen={openPersonalInfos} />
           </Collapse>
         </Box>
         <Box
