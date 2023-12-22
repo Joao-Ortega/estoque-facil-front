@@ -8,6 +8,8 @@ import { ArrowDropDown, ArrowDropUp, Check, Edit } from '@mui/icons-material';
 
 const Profile = () => {
   const [openPersonalInfos, setOpenPersonaInfos] = useState<boolean>(false);
+  const [openPersonalization, setOpenPersonalization] = useState<boolean>(false);
+  const [openHistory, setOpenHistory] = useState<boolean>(false);
   const [infosUpdated, setInfosUpdated] = useState<boolean>(false);
   const { user } = UserInfosProvider();
 
@@ -69,23 +71,85 @@ const Profile = () => {
         </Box>
         <Box
           sx={{
-            backgroundColor: 'black',
-            color: 'white',
             margin: '8px 4px 3px 4px',
             padding: 1
           }}
         >
-          <Typography>Personalização</Typography>
+          <Box
+            display='flex'
+            alignItems='center'
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              borderRadius: '8px 8px 2px 2px',
+              padding: 1.5,
+              cursor: 'pointer'
+            }}
+            onClick={() => setOpenPersonalization(!openPersonalization)}
+          >
+            <Typography sx={{ fontWeight: 'bold', fontSize: 20 }}>Personalização</Typography>
+            <Tooltip title='Editar informações pessoais'>
+              { openPersonalization ? (<ArrowDropUp fontSize='large' />) : (<ArrowDropDown fontSize='large' />) }
+            </Tooltip>
+            { infosUpdated && <Typography sx={{ fontSize: 15, marginLeft: 2, marginRight: 1.5 }}>Dados Atualizados!</Typography> }
+            { infosUpdated && <Check color='success' /> }
+          </Box>
+          <Collapse
+            in={openPersonalization}
+            timeout={600}
+          >
+            {/* Componente de Personalização */}
+            <Box
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                color: 'white',
+                padding: 1,
+              }}
+            >
+              Personalização
+            </Box>
+            {/* Componente de Personalização */}
+          </Collapse>
         </Box>
         <Box
           sx={{
-            backgroundColor: 'black',
-            color: 'white',
             margin: '8px 4px 3px 4px',
             padding: 1
           }}
         >
-          <Typography>Histórico de Compras</Typography>
+          <Box
+            display='flex'
+            alignItems='center'
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              borderRadius: '8px 8px 2px 2px',
+              padding: 1.5,
+              cursor: 'pointer'
+            }}
+            onClick={() => setOpenHistory(!openHistory)}
+          >
+            <Typography sx={{ fontWeight: 'bold', fontSize: 20 }}>Histórico de Compras</Typography>
+            <Tooltip title='Editar informações pessoais'>
+              { openHistory ? (<ArrowDropUp fontSize='large' />) : (<ArrowDropDown fontSize='large' />) }
+            </Tooltip>
+            { infosUpdated && <Typography sx={{ fontSize: 15, marginLeft: 2, marginRight: 1.5 }}>Dados Atualizados!</Typography> }
+            { infosUpdated && <Check color='success' /> }
+          </Box>
+          <Collapse
+            in={openHistory}
+            timeout={600}
+          >
+            {/* Componente de Histórico */}
+            <Box
+              sx={{
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                color: 'white',
+                padding: 1,
+              }}
+            >
+              Histórico
+            </Box>
+            {/* Componente de Histórico */}
+          </Collapse>
         </Box>
       </Box>
     </Box>
