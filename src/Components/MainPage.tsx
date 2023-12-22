@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Box, Checkbox, List, ListItem, ListItemText, Typography } from '@mui/material';
 import requestApi from '../api/axios';
 import RenderProduct from './ProductsList';
@@ -6,15 +7,21 @@ import RenderProduct from './ProductsList';
 
 const MainPage: React.FC = () => {
   const [listProducts, setListProducts] = useState([]);
+  const router = useRouter();
   const requestListProducts = async () => {
-    const { token } = JSON.parse(localStorage.getItem('userData') as string);
-    // console.log(token);
-    
-    const response = await requestApi.get('/products', { headers: {
+    try {
+      const { token } = JSON.parse(localStorage.getItem('userData') as string);
+      
+      const response = await requestApi.get('/products', { headers: {
       authorization: token,
     } });
+    
     localStorage.setItem('listProducts', JSON.stringify(response.data.message[0].productsList));
     setListProducts(response.data.message[0].productsList);
+  } catch (error) {
+      alert("Usuário não autenticado")
+      router.push('/');
+    }
   };
 
   useEffect(() => {
