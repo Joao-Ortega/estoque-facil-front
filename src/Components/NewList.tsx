@@ -1,14 +1,17 @@
-import { Box, Collapse, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { Alert, Box, Collapse, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import '../style/loginPage.css';
 import { Add, ArrowDropDown, ArrowDropUp, FormatListBulleted, RestartAlt } from '@mui/icons-material';
+import { IProduct } from '../interfaces/products';
 
 const NewList = () => {
   const [category, setCategory] = useState<string>('');
   const [productName, setProductName] = useState<string>('');
   const [quantity, setQuantity] = useState<string>('');
   const [openCreator, setOpenCreator] = useState<boolean>(false);
-  const [productList, setProductList] = useState<any[]>([]);
+  const [productList, setProductList] = useState<IProduct[]>([]);
+  const [incompleteData, setIncompleteData] = useState<boolean>(false);
+  const [product, setProduct] = useState<IProduct>({ image: '', productName: '', quantity: '' });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement> | SelectChangeEvent, callback: Function) => {
     callback(event.target.value);
@@ -21,6 +24,19 @@ const NewList = () => {
     } else {
       setQuantity(event.target.value)
     }
+  }
+
+  const addProducOnList = (product: IProduct) => {
+    console.log('product', product)
+  }
+
+  const buildProduct = () => {
+    if (!category || !productName || !quantity) {
+      setIncompleteData(true);
+      setTimeout(() => { setIncompleteData(false) }, 3500);
+      return
+    }
+    addProducOnList({ image: '', productName, quantity })
   }
 
   useEffect(() => {
@@ -46,7 +62,7 @@ const NewList = () => {
       >
         <Typography marginRight={2} variant='h5'>Nova Lista</Typography>
         <FormatListBulleted />
-        { openCreator ? (<ArrowDropUp fontSize='large' />) : (<ArrowDropDown fontSize='large' />) }
+        {openCreator ? (<ArrowDropUp fontSize='large' />) : (<ArrowDropDown fontSize='large' />)}
       </Box>
       <Collapse in={openCreator} timeout={600} >
         <Box
@@ -128,34 +144,53 @@ const NewList = () => {
           <Box
             sx={{ width: '80vw' }}
             display='flex'
-            justifyContent='flex-end'
+            justifyContent={incompleteData ? 'space-between' : 'flex-end'}
             alignItems='center'
             padding={0.5}
           >
             {/* <Typography variant='button'>Adicionar</Typography> */}
-            <RestartAlt
-              onClick={() => {
-                setProductName('');
-                setQuantity('');
-                setCategory('');
-              }}
-              sx={{
-                backgroundColor: 'white',
-                color: 'black',
-                borderRadius: 5,
-                fontSize: '25px',
-                margin: '0 0 0 5px'
-              }}
-            />
-            <Add
-              sx={{
-                backgroundColor: 'green',
-                color: 'black',
-                borderRadius: 5,
-                fontSize: '25px',
-                margin: '0 0 0 20px'
-              }}
-            />
+            {incompleteData &&
+              (
+                <Alert
+                  sx={{
+                    alignSelf: 'start',
+                    fontSize: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '25px'
+                  }}
+                  severity='error'
+                >
+                  Preencha todos os campos!
+                </Alert>
+              )
+            }
+            <Box>
+              <RestartAlt
+                onClick={() => {
+                  setProductName('');
+                  setQuantity('');
+                  setCategory('');
+                }}
+                sx={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                  borderRadius: 5,
+                  fontSize: '25px',
+                  margin: '0 0 0 5px'
+                }}
+              />
+              <Add
+                onClick={buildProduct}
+                sx={{
+                  backgroundColor: 'green',
+                  color: 'black',
+                  borderRadius: 5,
+                  fontSize: '25px',
+                  margin: '0 0 0 20px'
+                }}
+              />
+            </Box>
           </Box>
         </Box>
       </Collapse>
