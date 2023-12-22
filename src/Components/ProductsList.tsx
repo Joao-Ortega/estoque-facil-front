@@ -51,20 +51,6 @@ const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProduc
         </CardContent>
       </Card>
     </Box>
-    // <ul>
-    //   <List>
-    //     <ListItem
-    //       key={product.sequence}
-    //       disableGutters
-    //       secondaryAction={
-    //         <CheckBox color="success" />
-    //       }
-    //     >
-    //       <ListItemText primary={product.productName} />
-    //       <ListItemText primary={product.quantity} />
-    //     </ListItem>
-    //   </List>
-    // </ul>
   )
 }
 
