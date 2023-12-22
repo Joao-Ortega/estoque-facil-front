@@ -12,7 +12,6 @@ export const updateUser = async (params: IFields): Promise<any> => {
     );
     return { code: response.status, token: response.data.token }
   } catch (error: any) {
-    console.log('error', error)
     return { code: error.response.status, message: error.response.data.message }
   }
 }
