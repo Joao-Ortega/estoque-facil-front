@@ -4,7 +4,7 @@ import { UserInfosProvider } from '../context/UserProvider';
 import '../style/loginPage.css';
 import { Box, Collapse, Tooltip, Typography } from '@mui/material';
 import ProfileForm from './Forms/ProfileForm';
-import { Check, Edit } from '@mui/icons-material';
+import { ArrowDropDown, ArrowDropUp, Check, Edit } from '@mui/icons-material';
 
 const Profile = () => {
   const [openPersonalInfos, setOpenPersonaInfos] = useState<boolean>(false);
@@ -45,15 +45,13 @@ const Profile = () => {
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               borderRadius: '8px 8px 2px 2px',
               padding: 1.5,
+              cursor: 'pointer'
             }}
+            onClick={() => setOpenPersonaInfos(!openPersonalInfos)}
           >
-            <Typography sx={{ fontWeight: 'bold', fontSize: 20, marginRight: 1 }}>Minha Conta</Typography>
-            <Tooltip
-              title='Editar informações pessoais'
-              sx={{ cursor: 'pointer' }}
-              onClick={() => setOpenPersonaInfos(!openPersonalInfos)}
-            >
-              <Edit color='info' />
+            <Typography sx={{ fontWeight: 'bold', fontSize: 20 }}>Minha Conta</Typography>
+            <Tooltip title='Editar informações pessoais'>
+              { openPersonalInfos ? (<ArrowDropUp fontSize='large' />) : (<ArrowDropDown fontSize='large' />) }
             </Tooltip>
             { infosUpdated && <Typography sx={{ fontSize: 15, marginLeft: 2, marginRight: 1.5 }}>Dados Atualizados!</Typography> }
             { infosUpdated && <Check color='success' /> }

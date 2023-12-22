@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Box, Button, CircularProgress, Collapse, TextField, 
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UserInfosProvider } from '../../context/UserProvider'
 import { checkInputField } from '../../functions/user';
-import { EditNote, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Edit, EditNote, Visibility, VisibilityOff } from '@mui/icons-material';
 import { IUserInfosDecoded } from '../../interfaces/userInterfaces';
 import { IValidateObj } from '../../interfaces';
 import { updateUser } from '../../api/user';
@@ -98,16 +98,6 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
     >
       <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
         <Typography sx={{ minWidth: 70 }}>EMAIL</Typography>
-        <EditNote
-          onClick={() => {
-            const copyState = [...disableFields]
-            copyState[0] = !copyState[0]
-            setDisableFields(copyState)
-          }}
-          fontSize='medium'
-          color='info'
-          sx={{ minWidth: 50 }}
-        />
         <TextField
           size='small'
           value={email}
@@ -115,18 +105,19 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
           onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           sx={{ color: 'white', backgroundColor: 'white', borderRadius: 2, maxWidth: 220 }}
         />
-      </Box>
-      <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
-        <Typography sx={{ minWidth: 50 }}>APELIDO</Typography>
-        <EditNote
+        <Edit
           onClick={() => {
             const copyState = [...disableFields]
-            copyState[1] = !copyState[1]
+            copyState[0] = !copyState[0]
             setDisableFields(copyState)
           }}
           fontSize='medium'
-          color='info'
+          color='warning'
+          // sx={{ minWidth: 50 }}
         />
+      </Box>
+      <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
+        <Typography sx={{ minWidth: 50 }}>APELIDO</Typography>
         <TextField
           size='small'
           value={name}
@@ -134,19 +125,18 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
           onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
           sx={{ color: 'white', backgroundColor: 'white', borderRadius: 2, maxWidth: 220 }}
         />
-      </Box>
-      <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
-        <Typography sx={{ minWidth: 70 }}>SENHA</Typography>
-        <EditNote
+        <Edit
           onClick={() => {
             const copyState = [...disableFields]
-            copyState[2] = !copyState[2]
+            copyState[1] = !copyState[1]
             setDisableFields(copyState)
           }}
           fontSize='medium'
-          color='info'
-          sx={{ minWidth: 50 }}
+          color='warning'
         />
+      </Box>
+      <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
+        <Typography sx={{ minWidth: 70 }}>SENHA</Typography>
         <TextField
           size='small'
           value={password}
@@ -161,6 +151,16 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
           disabled={disableFields[2]}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           sx={{ color: 'white', backgroundColor: 'white', borderRadius: 2, maxWidth: 220 }}
+        />
+        <Edit
+          onClick={() => {
+            const copyState = [...disableFields]
+            copyState[2] = !copyState[2]
+            setDisableFields(copyState)
+          }}
+          fontSize='medium'
+          color='warning'
+          // sx={{ color: 'warning' }}
         />
       </Box>
       <Collapse in={isInputPasswordFocus}>
