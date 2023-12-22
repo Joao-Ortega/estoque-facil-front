@@ -6,6 +6,7 @@ import { Edit, EditNote, Visibility, VisibilityOff } from '@mui/icons-material';
 import { IUserInfosDecoded } from '../../interfaces/userInterfaces';
 import { IValidateObj } from '../../interfaces';
 import { updateUser } from '../../api/user';
+import { switchResponse } from '../../functions';
 
 interface IProfileFormProps {
   isOpen: boolean;
@@ -43,7 +44,7 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
     setName(infos.name)
   }
 
-  const checkInfosChanged = () => {
+  const checkChangedFields = () => {
     const controlFields = [{email}, {name}, {password}]
     let fieldsToUpdate = {}
     for (let i = 0; i < disableFields.length; i++) {
@@ -72,10 +73,17 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
 
   const handleUpdate = async () => {
     setDataSend(true)
-    const fields = checkInfosChanged();
+    const fields = checkChangedFields();
     if (fields) {
       const treatedFields = isSameInfos(fields);
       const updated = await updateUser(treatedFields);
+      if (updated.code !== 200) {
+        const message = switchResponse(updated.message)
+        setErrorOnUpdate({ error: true, message });
+        setDataSend(false);
+        setTimeout(() => { setErrorOnUpdate({ error: false, message: '' }) }, 3500);
+        return;
+      }
       if (updated.token) {
         decodeUser(updated.token)
       }
@@ -113,7 +121,6 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
           }}
           fontSize='medium'
           color='warning'
-          // sx={{ minWidth: 50 }}
         />
       </Box>
       <Box display='flex' justifyContent='space-between' alignItems='center' margin='2% 0'>
@@ -160,7 +167,6 @@ const ProfileForm: React.FC<IProfileFormProps> = ({ isOpen, setIsOpen, setUpdate
           }}
           fontSize='medium'
           color='warning'
-          // sx={{ color: 'warning' }}
         />
       </Box>
       <Collapse in={isInputPasswordFocus}>
