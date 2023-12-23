@@ -16,7 +16,7 @@ const MainPage: React.FC = () => {
         authorization: token,
       } });
       localStorage.setItem('listProducts', JSON.stringify(response.data.message[0].productsList));
-      setListProducts(response.data.message[0].productsList);
+      setListProducts(response.data.message[0].lists[0].products);
       setIsLoading(false);
     } catch (error) {
       console.log('error', error)
