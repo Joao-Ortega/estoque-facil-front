@@ -1,8 +1,9 @@
-import { Alert, Box, Collapse, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Collapse, Grid, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import '../style/loginPage.css';
-import { Add, ArrowDropDown, ArrowDropUp, FormatListBulleted, RestartAlt } from '@mui/icons-material';
+import { Add, ArrowDropDown, ArrowDropUp, Edit, FormatListBulleted, RestartAlt } from '@mui/icons-material';
 import { IProduct } from '../interfaces/products';
+import RenderProduct from './ProductsList';
 
 const NewList = () => {
   const [category, setCategory] = useState<string>('');
@@ -11,6 +12,9 @@ const NewList = () => {
   const [openCreator, setOpenCreator] = useState<boolean>(false);
   const [productList, setProductList] = useState<IProduct[]>([]);
   const [incompleteData, setIncompleteData] = useState<boolean>(false);
+  const [listName, setListName] = useState<string>('');
+  const [definedListName, setDefinedListName] = useState<string>('');
+  const [editListName, setEditListName] = useState<boolean>(false);
   const [product, setProduct] = useState<IProduct>({ image: '', productName: '', quantity: '' });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement> | SelectChangeEvent, callback: Function) => {
@@ -27,11 +31,21 @@ const NewList = () => {
   }
 
   const addProducOnList = (product: IProduct) => {
-    console.log('product', product)
+    setProductList([...productList, product])
+    setCategory('');
+    setProductName('');
+    setQuantity('');
+    setDefinedListName(listName);
+    setEditListName(true);
   }
 
   const buildProduct = () => {
-    if (!category || !productName || !quantity) {
+    if (productList.length && !category && !productName && !quantity) {
+      setDefinedListName(listName);
+      setEditListName(true);
+      return
+    }
+    if ((!productList.length && !listName) || (!category || !productName || !quantity)) {
       setIncompleteData(true);
       setTimeout(() => { setIncompleteData(false) }, 3500);
       return
@@ -45,10 +59,21 @@ const NewList = () => {
       setProductName('');
       setQuantity('');
     }
-  }, [openCreator])
+  }, [openCreator]);
+
+  useEffect(() => {
+    console.log('title', definedListName)
+  }, [definedListName])
+
+  useEffect(() => {
+    console.log('productsList', productList)
+  }, [productList])
+
 
   return (
-    <Box>
+    <Box
+      sx={{ overflowY: 'auto', maxHeight: '90vh' }}
+    >
       <Box
         display='flex'
         justifyContent='center'
@@ -80,6 +105,36 @@ const NewList = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              margin: '0 0 5px 0'
+            }}
+          >
+            <Typography variant='button'>Nome da Lista</Typography>
+            <Box
+              display='flex'
+              alignItems='center'
+              justifyContent='center'
+            >
+              <TextField
+                size='small'
+                disabled={!!definedListName && editListName}
+                inputProps={{ maxLength: 25 }}
+                sx={{
+                  backgroundColor: 'white',
+                  borderRadius: 1.5,
+                  minWidth: 250,
+                  margin: editListName ? '0 10px 0 40px' : 0
+                }}
+                value={listName}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, setListName)}
+              />
+              {editListName && <Edit onClick={() => setEditListName(false)} color='warning' />}
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               margin: '0 0 10px 0'
             }}
           >
@@ -93,11 +148,11 @@ const NewList = () => {
               size='small'
               onChange={(e: SelectChangeEvent) => handleChange(e, setCategory)}
             >
-              <MenuItem value={0}>Açougue</MenuItem>
-              <MenuItem value={1}>Limpeza/Higiene</MenuItem>
-              <MenuItem value={2}>Padaria</MenuItem>
-              <MenuItem value={3}>Bebidas</MenuItem>
-              <MenuItem value={4}>Utensílios</MenuItem>
+              <MenuItem value='0'>Açougue</MenuItem>
+              <MenuItem value='1'>Limpeza/Higiene</MenuItem>
+              <MenuItem value='2'>Padaria</MenuItem>
+              <MenuItem value='3'>Bebidas</MenuItem>
+              <MenuItem value='4'>Utensílios</MenuItem>
             </Select>
           </Box>
           <Box
@@ -194,6 +249,58 @@ const NewList = () => {
           </Box>
         </Box>
       </Collapse>
+      {definedListName && (
+        <Grid
+          display='flex'
+          alignItems='center'
+          container
+          justifyContent='center'
+          sx={{ margin: '5px 0 0 0' }}
+          // padding={0.5}
+        >
+          <Grid
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            item
+            xs={9}
+          >
+            <Typography
+              sx={{
+                margin: '10px 0 5px 0',
+                fontSize: 20,
+                fontWeight: 600,
+                textShadow: '-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black',
+                color: 'white',
+              }}
+              textAlign='center'
+              variant='body2'
+            >
+              {definedListName}
+            </Typography>
+          </Grid>
+          <Grid
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            item
+            xs={3}
+          >
+            <Button
+              color='success'
+              variant='contained'
+              size='small'
+            >
+              Salvar
+            </Button>
+          </Grid>
+        </Grid>
+      )}
+      <Box>
+        {productList.length ? productList.map((product: IProduct, i: number) => (
+          <RenderProduct key={i} product={product} />
+        )) : null}
+      </Box>
     </Box>
   )
 }

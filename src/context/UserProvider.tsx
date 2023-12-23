@@ -20,6 +20,7 @@ export const UserProvider = ({ children }: IUserProps) => {
   }, []);
 
   const decodeUser = (token: string): void => {
+    console.log('token', token)
     const decodedToken = jwt.verify(token, `${process.env.SECRET}`, { algorithms: ['HS256'] }) as any
     const objectGlobal = { name: decodedToken.name, token }
     localStorage.setItem('userData', JSON.stringify(objectGlobal));
