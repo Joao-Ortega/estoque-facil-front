@@ -4,6 +4,7 @@ import '../style/loginPage.css';
 import { Add, ArrowDropDown, ArrowDropUp, Edit, FormatListBulleted, RestartAlt } from '@mui/icons-material';
 import { IProduct } from '../interfaces/products';
 import RenderProduct from './ProductsList';
+import SaveListModal from './Modals/SaveListModal';
 
 const NewList = () => {
   const [category, setCategory] = useState<string>('');
@@ -15,6 +16,7 @@ const NewList = () => {
   const [listName, setListName] = useState<string>('');
   const [definedListName, setDefinedListName] = useState<string>('');
   const [editListName, setEditListName] = useState<boolean>(false);
+  const [confirmModal, setConfirmModal] = useState<boolean>(false);
   const [product, setProduct] = useState<IProduct>({ image: '', productName: '', quantity: '' });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement> | SelectChangeEvent, callback: Function) => {
@@ -51,6 +53,10 @@ const NewList = () => {
       return
     }
     addProducOnList({ image: '', productName, quantity })
+  };
+
+  const handleSaveList = () => {
+    setConfirmModal(true);
   }
 
   useEffect(() => {
@@ -61,19 +67,16 @@ const NewList = () => {
     }
   }, [openCreator]);
 
-  useEffect(() => {
-    console.log('title', definedListName)
-  }, [definedListName])
-
-  useEffect(() => {
-    console.log('productsList', productList)
-  }, [productList])
-
-
   return (
     <Box
       sx={{ overflowY: 'auto', maxHeight: '90vh' }}
     >
+      <SaveListModal
+        open={confirmModal}
+        setOpen={setConfirmModal}
+        listName={listName}
+        productsList={productList}
+      />
       <Box
         display='flex'
         justifyContent='center'
@@ -203,7 +206,6 @@ const NewList = () => {
             alignItems='center'
             padding={0.5}
           >
-            {/* <Typography variant='button'>Adicionar</Typography> */}
             {incompleteData &&
               (
                 <Alert
@@ -256,7 +258,6 @@ const NewList = () => {
           container
           justifyContent='center'
           sx={{ margin: '5px 0 0 0' }}
-          // padding={0.5}
         >
           <Grid
             display='flex'
@@ -290,6 +291,7 @@ const NewList = () => {
               color='success'
               variant='contained'
               size='small'
+              onClick={handleSaveList}
             >
               Salvar
             </Button>
