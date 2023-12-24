@@ -1,4 +1,5 @@
 import { IFields } from "../interfaces";
+import { IListInfo } from "../interfaces/products";
 import requestApi from "./axios";
 
 export const updateUser = async (params: IFields): Promise<any> => {
@@ -15,3 +16,17 @@ export const updateUser = async (params: IFields): Promise<any> => {
     return { code: error.response.status, message: error.response.data.message }
   }
 }
+
+export const createNewUserList = async (list: IListInfo) => {
+  try {
+    const { token } = JSON.parse(localStorage.getItem('userData') as string);
+    const response = await requestApi.post(
+      '/products',
+      list,
+      { headers: { authorization: token } }
+    );
+    return { code: response.status }
+  } catch (error: any) {
+    return { code: error.response.status, message: error.response.data.message }
+  }
+} 

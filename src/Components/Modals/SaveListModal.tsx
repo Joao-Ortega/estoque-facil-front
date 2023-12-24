@@ -1,23 +1,29 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
 import React from 'react';
+import { createNewUserList } from '../../api/user';
 
 interface ISaveListProps {
   open: boolean;
   setOpen: Function;
   listName: string;
   productsList: any[];
+  isSaving: Function;
+  setResponse: Function;
 }
 
-const SaveListModal: React.FC<ISaveListProps> = ({ open, setOpen, listName, productsList }: ISaveListProps) => {
+const SaveListModal: React.FC<ISaveListProps> = ({ open, setOpen, listName, productsList, isSaving, setResponse }: ISaveListProps) => {
 
   const handleClose = () => setOpen(false);
 
-  const saveList = () => {
+  const saveList = async () => {
+    isSaving(true);
     const infosToSave = {
       listName,
       productsList
     };
-    console.log('infosToSave', infosToSave)
+    const response = await createNewUserList(infosToSave)
+    isSaving(false);
+    setResponse(response.code)
     handleClose()
   }
 

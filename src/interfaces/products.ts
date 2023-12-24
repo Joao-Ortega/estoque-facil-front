@@ -1,5 +1,11 @@
 export interface IProduct {
-  image: string;
+  sequence: number;
+  measure: string;
   productName: string;
   quantity: string;
+}
+
+export interface IListInfo {
+  listName: string;
+  productsList: IProduct[];
 }
