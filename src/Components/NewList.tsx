@@ -1,13 +1,13 @@
 import { Alert, Box, Button, Collapse, Grid, MenuItem, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import '../style/loginPage.css';
-import { Add, ArrowDropDown, ArrowDropUp, Edit, FormatListBulleted, RestartAlt } from '@mui/icons-material';
+import { Add, ArrowDropDown, ArrowDropUp, Backspace, Edit, FormatListBulleted, RestartAlt } from '@mui/icons-material';
 import { IProduct } from '../interfaces/products';
 import RenderProduct from './ProductsList';
 import SaveListModal from './Modals/SaveListModal';
 
 const NewList = () => {
-  const [category, setCategory] = useState<string>('');
+  const [unity, setUnity] = useState<string>('');
   const [productName, setProductName] = useState<string>('');
   const [quantity, setQuantity] = useState<string>('');
   const [openCreator, setOpenCreator] = useState<boolean>(false);
@@ -34,7 +34,7 @@ const NewList = () => {
 
   const addProducOnList = (product: IProduct) => {
     setProductList([...productList, product])
-    setCategory('');
+    setUnity('');
     setProductName('');
     setQuantity('');
     setDefinedListName(listName);
@@ -42,12 +42,12 @@ const NewList = () => {
   }
 
   const buildProduct = () => {
-    if (productList.length && !category && !productName && !quantity) {
+    if (productList.length && !unity && !productName && !quantity) {
       setDefinedListName(listName);
       setEditListName(true);
       return
     }
-    if ((!productList.length && !listName) || (!category || !productName || !quantity)) {
+    if ((!productList.length && !listName) || (!unity || !productName || !quantity)) {
       setIncompleteData(true);
       setTimeout(() => { setIncompleteData(false) }, 3500);
       return
@@ -61,7 +61,7 @@ const NewList = () => {
 
   useEffect(() => {
     if (!openCreator) {
-      setCategory('');
+      setUnity('');
       setProductName('');
       setQuantity('');
     }
@@ -136,33 +136,8 @@ const NewList = () => {
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
-              margin: '0 0 10px 0'
-            }}
-          >
-            <Typography variant='button'>Categoria</Typography>
-            <Select
-              sx={{
-                backgroundColor: 'white',
-                minWidth: 250
-              }}
-              value={category}
-              size='small'
-              onChange={(e: SelectChangeEvent) => handleChange(e, setCategory)}
-            >
-              <MenuItem value='0'>Açougue</MenuItem>
-              <MenuItem value='1'>Limpeza/Higiene</MenuItem>
-              <MenuItem value='2'>Padaria</MenuItem>
-              <MenuItem value='3'>Bebidas</MenuItem>
-              <MenuItem value='4'>Utensílios</MenuItem>
-            </Select>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-around',
+              justifyContent: 'space-evenly',
               margin: '0 0 10px 0',
               width: '100vw'
             }}
@@ -174,10 +149,10 @@ const NewList = () => {
                 alignItems: 'center',
               }}
             >
-              <Typography variant='button'>Nome do Produto</Typography>
+              <Typography variant='button'>Produto</Typography>
               <TextField
                 size='small'
-                sx={{ backgroundColor: 'white', borderRadius: 1.5, minWidth: 250 }}
+                sx={{ backgroundColor: 'white', borderRadius: 1.5, width: 180 }}
                 value={productName}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e, setProductName)}
               />
@@ -189,18 +164,52 @@ const NewList = () => {
                 alignItems: 'center',
               }}
             >
-              <Typography variant='button'>Quantidade</Typography>
+              <Typography variant='button'>Qtd</Typography>
               <TextField
                 size='small'
                 type='number'
-                sx={{ backgroundColor: 'white', borderRadius: 1.5, maxWidth: 80 }}
+                sx={{ backgroundColor: 'white', borderRadius: 1.5, width: 70 }}
                 value={quantity}
                 onChange={handleQuantity}
               />
             </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant='button'>Unidade</Typography>
+              <Select
+                sx={{
+                  backgroundColor: 'white',
+                  width: 70
+                }}
+                value={unity}
+                size='small'
+                onChange={(e: SelectChangeEvent) => handleChange(e, setUnity)}
+              >
+                <MenuItem value='0'>Kg</MenuItem>
+                <MenuItem value='1'>g</MenuItem>
+                <MenuItem value='2'>Lt</MenuItem>
+                <MenuItem value='3'>ml</MenuItem>
+                <MenuItem value='4'>Un</MenuItem>
+              </Select>
+            </Box>
           </Box>
           <Box
-            sx={{ width: '80vw' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+              margin: '0 0 10px 0',
+              width: '100vw'
+            }}
+          >
+          </Box>
+          <Box
+            sx={{ width: '90vw' }}
             display='flex'
             justifyContent={incompleteData ? 'space-between' : 'flex-end'}
             alignItems='center'
@@ -222,32 +231,28 @@ const NewList = () => {
                 </Alert>
               )
             }
-            <Box>
-              <RestartAlt
-                onClick={() => {
-                  setProductName('');
-                  setQuantity('');
-                  setCategory('');
-                }}
-                sx={{
-                  backgroundColor: 'white',
-                  color: 'black',
-                  borderRadius: 5,
-                  fontSize: '25px',
-                  margin: '0 0 0 5px'
-                }}
-              />
-              <Add
-                onClick={buildProduct}
-                sx={{
-                  backgroundColor: 'green',
-                  color: 'black',
-                  borderRadius: 5,
-                  fontSize: '25px',
-                  margin: '0 0 0 20px'
-                }}
-              />
-            </Box>
+            <Backspace
+              onClick={() => {
+                setProductName('');
+                setQuantity('');
+                setUnity('');
+              }}
+              sx={{
+                color: 'white',
+                fontSize: '30px',
+                margin: incompleteData ? '0 0 0 40px' : '0 0 0 5px'
+              }}
+            />
+            <Add
+              onClick={buildProduct}
+              sx={{
+                backgroundColor: 'rgb(0, 13, 255)',
+                color: 'black',
+                borderRadius: 2,
+                fontSize: '28px',
+                margin: '0 0 0 20px'
+              }}
+            />
           </Box>
         </Box>
       </Collapse>
