@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Box, Button, Checkbox, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import requestApi from '../api/axios';
 import RenderProduct from './ProductsList';
 import Loading from './Loading';
-import { blue } from '@mui/material/colors';
+import { updateUserList } from '../api/user';
 
 
 const MainPage: React.FC = () => {
   const [listProducts, setListProducts] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(true);
+
   const router = useRouter();
+
   const requestListProducts = async () => {
     try {
       const { token } = JSON.parse(localStorage.getItem('userData') as string);
@@ -19,6 +22,7 @@ const MainPage: React.FC = () => {
       } });
 
       const list = response.data.message[0].lists
+      localStorage.setItem('listName', list[list.length - 1].listName);
       localStorage.setItem('listProducts', JSON.stringify(list[list.length - 1].productsList));
       setListProducts(list[list.length - 1].productsList);
       setIsLoading(false);
@@ -29,6 +33,14 @@ const MainPage: React.FC = () => {
     }
   };
 
+  const saveList = () => {
+    localStorage.setItem('listProducts', JSON.stringify(listProducts));
+    const listName = localStorage.getItem('listName') as string;
+    setDisabled(true);
+    // validar se realmente foi salvo no banco de dados
+    updateUserList({ listName, productsList: listProducts })
+  }
+
   useEffect(() => {
     setIsLoading(true);
     requestListProducts();
@@ -38,15 +50,50 @@ const MainPage: React.FC = () => {
     return (<Loading size='65px' color='green' />)
   } else {
     return (
-      <Box sx={ { overflowY: 'auto', marginTop: 8 } }>
+      <Box sx={{
+        overflowY: 'auto',
+        paddingTop: 14,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}>
         {listProducts.length ? listProducts.map((product: any, i: number) => {
-          product.checked = false;
-          return <RenderProduct key={i} product={product} />
+          return <RenderProduct key={i} product={product} disabled={disabled} />
           }) : <Typography>Lista Vazia</Typography>}
-        <Button
-          sx={ { margin: '0 auto 0 auto', width: '85vw', height: '10vh', backgroundColor: blue[500] } }
-          onClick={ () => { console.log(listProducts); }}
-        >AQUI</Button>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+            width: '100%',
+            position: 'fixed',
+            bottom: 5,
+          }}
+        >
+          <Button
+            variant={disabled ? 'contained' : 'outlined'}
+            sx={{
+              margin: '0 auto 0 auto',
+              width: '45%',
+              height: '7vh',
+              color: '#fff',
+            }}
+            onClick={() => { setDisabled(false); console.log('Botão editar clicado'); }}
+            disabled={!disabled}
+          >Editar</Button>
+          <Button
+            variant={disabled ? 'outlined' : 'contained'}
+            sx={{
+              margin: '0 auto 0 auto',
+              width: '45%',
+              height: '7vh',
+              color: '#fff',
+          }}
+            onClick={saveList}
+            disabled={disabled}
+          >Salvar</Button>
+        </Box>
       </Box>
     )
   }

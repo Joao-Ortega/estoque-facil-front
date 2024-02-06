@@ -1,23 +1,19 @@
 import { Box, Card, CardContent, Typography, Checkbox } from '@mui/material';
 import { green } from '@mui/material/colors';
 import React, { useEffect, useState } from 'react';
+import { IProduct } from '../interfaces/products';
 
 interface IRenderProductProps {
-  product: {
-    productName: string,
-    quantity: number,
-    measure: string,
-    checked: boolean,
-  };
+  product: IProduct;
+  disabled: boolean;
 }
 
-const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProductProps) => {
+const RenderProduct: React.FC<IRenderProductProps> = ({ product, disabled }: IRenderProductProps) => {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    product.checked = checked;
-  }
-  , []);
+    setChecked(product.checked);
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     product.checked = event.target.checked;
@@ -45,7 +41,8 @@ const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProduc
             alignItems: 'center',
           }}
         >
-          <Checkbox
+          {!disabled ? (
+            <Checkbox
             sx={{
               color: green[800],
               '&.Mui-checked': {
@@ -58,6 +55,9 @@ const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProduc
             onChange={handleChange}
             inputProps={{ 'aria-label': 'controlled' }}
           ></Checkbox>
+          ) : (
+            <Box sx={{ width: '30px', height: '30px' }}></Box>
+          )}
         </Box>
         <CardContent
           sx={{
