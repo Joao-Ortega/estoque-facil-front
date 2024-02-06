@@ -1,52 +1,83 @@
-import { CheckBox } from '@mui/icons-material';
-import { Box, Card, CardContent, CardMedia, List, ListItem, ListItemText, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Card, CardContent, Typography, Checkbox } from '@mui/material';
+import { green } from '@mui/material/colors';
+import React, { useEffect, useState } from 'react';
+import { IProduct } from '../interfaces/products';
 
 interface IRenderProductProps {
-  product: any;
+  product: IProduct;
+  disabled: boolean;
 }
 
-const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProductProps) => {
+const RenderProduct: React.FC<IRenderProductProps> = ({ product, disabled }: IRenderProductProps) => {
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    setChecked(product.checked);
+  }, []);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    product.checked = event.target.checked;
+    setChecked(event.target.checked);
+  };
+
   return (
-    <Box display='flex' justifyContent='center' sx={{ margin: '0 auto 0 auto' }}>
+    <Box display='flex' justifyContent='center' alignItems='center' sx={{ margin: '0 auto 0 auto' }}>
       <Card
         sx={{
-          height: '15vh',
+          height: '6vh',
           width: '85vw',
           margin: '2%',
-          display: 'flex'
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          padding: '5px 5px',
+          borderRadius: '10px 20px',
         }}
       >
         <Box
           sx={{
-            // border: '1px solid black',
-            //   height: '140',
-            width: '30vw'
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <CardMedia
-            component='img'
-            alt='meat image'
-            height='100'
-            image='https://t4.ftcdn.net/jpg/00/83/36/05/360_F_83360582_oxUzWNwMqPLewOONSG5V8Kb6kfmDkdeP.jpg'
-          />
+          {!disabled ? (
+            <Checkbox
+            sx={{
+              color: green[800],
+              '&.Mui-checked': {
+                color: green[600],
+              },
+              width: '30px',
+              height: '30px',
+            }}
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ 'aria-label': 'controlled' }}
+          ></Checkbox>
+          ) : (
+            <Box sx={{ width: '30px', height: '30px' }}></Box>
+          )}
         </Box>
         <CardContent
           sx={{
             alignItems: 'center',
             display: 'flex',
+            marginTop: '6px',
             justifyContent: 'space-between',
-            // border: '1px solid green',
-            width: '70%'
+            width: '60%'
           }}
         >
-          <Box display='flex' flexDirection='column'>
-            <Typography>PRODUTO</Typography>
-            <Typography>{product.productName}</Typography>
-          </Box>
-          <Box display='flex' alignItems='center' flexDirection='column'>
-            <Typography>QTD</Typography>
-            <Typography>{product.quantity}</Typography>
+          <Typography>{`${product.productName.charAt(0).toUpperCase()}${product.productName.slice(1)}`}</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '28%',
+              justifyContent: 'center'
+            }}
+          >
+          <Typography>{`${product.quantity}`}</Typography>
+          <Typography>{`${product.measure}`}</Typography>
           </Box>
         </CardContent>
       </Card>

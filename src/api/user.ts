@@ -29,4 +29,21 @@ export const createNewUserList = async (list: IListInfo) => {
   } catch (error: any) {
     return { code: error.response.status, message: error.response.data.message }
   }
-} 
+}
+
+export const updateUserList = async (list: IListInfo) => {
+  // console.log(list)
+  // console.log(`${'/products'}/${list.listName}`)
+  try {
+    const { token } = JSON.parse(localStorage.getItem('userData') as string);
+    const response = await requestApi.put(
+      '/products',
+      list,
+      { headers: { authorization: token } }
+    );
+    return { code: response.status }
+  } catch (error: any) {
+    console.log(error.response.data.message)
+    return { code: error.response.status, message: error.response.data.message }
+  }
+}

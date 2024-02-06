@@ -3,6 +3,7 @@ export interface IProduct {
   measure: string;
   productName: string;
   quantity: string;
+  checked: boolean;
 }
 
 export interface IListInfo {

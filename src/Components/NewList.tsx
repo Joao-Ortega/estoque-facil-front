@@ -18,7 +18,7 @@ const NewList = () => {
   const [definedListName, setDefinedListName] = useState<string>('');
   const [editListName, setEditListName] = useState<boolean>(false);
   const [confirmModal, setConfirmModal] = useState<boolean>(false);
-  const [product, setProduct] = useState<IProduct>({ sequence: 0, measure: '', productName: '', quantity: '' });
+  const [product, setProduct] = useState<IProduct>({ sequence: 0, measure: '', productName: '', quantity: '', checked: false });
   const [savingList, setSavingList] = useState<boolean>(false);
   const [response, setResponse] = useState<number>(0);
 
@@ -55,7 +55,7 @@ const NewList = () => {
       setTimeout(() => { setIncompleteData(false) }, 3500);
       return
     }
-    addProducOnList({ sequence: productList.length ? productList.length : 0, measure: unity, productName, quantity })
+    addProducOnList({ sequence: productList.length ? productList.length : 0, measure: unity, productName, quantity, checked: false });
   };
 
   const handleSaveList = () => {
@@ -342,7 +342,7 @@ const NewList = () => {
         )}
         <Box>
           {productList.length ? productList.map((product: IProduct, i: number) => (
-            <RenderProduct key={i} product={product} />
+            <RenderProduct key={i} product={product} disabled={true} />
           )) : null}
         </Box>
       </Box>
