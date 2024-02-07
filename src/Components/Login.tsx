@@ -54,7 +54,6 @@ export default function Login() {
         alignItems="center"
       >
         <TextField
-          id="filled-basic"
           label="Email"
           variant="filled"
           value={ email }
@@ -63,7 +62,6 @@ export default function Login() {
           sx={{ margin: "1%", borderRadius: "2%", backgroundColor: "rgba(255, 255, 255, 0.7)" }}
         />
         <TextField
-          id="filled-basic"
           label="Senha"
           type="password"
           variant="filled"
