@@ -5,10 +5,9 @@ import { IProduct } from '../interfaces/products';
 
 interface IRenderProductProps {
   product: IProduct;
-  disabled: boolean;
 }
 
-const RenderProduct: React.FC<IRenderProductProps> = ({ product, disabled }: IRenderProductProps) => {
+const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProductProps) => {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
@@ -41,23 +40,19 @@ const RenderProduct: React.FC<IRenderProductProps> = ({ product, disabled }: IRe
             alignItems: 'center',
           }}
         >
-          {!disabled ? (
-            <Checkbox
-            sx={{
-              color: green[800],
-              '&.Mui-checked': {
-                color: green[600],
-              },
-              width: '30px',
-              height: '30px',
-            }}
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ 'aria-label': 'controlled' }}
-          ></Checkbox>
-          ) : (
-            <Box sx={{ width: '30px', height: '30px' }}></Box>
-          )}
+        <Checkbox
+          sx={{
+            color: green[800],
+            '&.Mui-checked': {
+              color: green[600],
+            },
+            width: '30px',
+            height: '30px',
+          }}
+          checked={checked}
+          onChange={handleChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        ></Checkbox>
         </Box>
         <CardContent
           sx={{

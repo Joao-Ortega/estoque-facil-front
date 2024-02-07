@@ -5,12 +5,14 @@ import requestApi from '../api/axios';
 import RenderProduct from './ProductsList';
 import Loading from './Loading';
 import { updateUserList } from '../api/user';
+import FinishListModal from './Modals/FinishListModal';
 
 
 const MainPage: React.FC = () => {
   const [listProducts, setListProducts] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState<boolean>(true);
+  const [productsNotPurchased, setproductsNotPurchased] = useState([]);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -36,9 +38,27 @@ const MainPage: React.FC = () => {
   const saveList = () => {
     localStorage.setItem('listProducts', JSON.stringify(listProducts));
     const listName = localStorage.getItem('listName') as string;
-    setDisabled(true);
     // validar se realmente foi salvo no banco de dados
     updateUserList({ listName, productsList: listProducts })
+  }
+
+  const handleFinish = () => {
+    const filterByChecked = listProducts.filter((product: any) => !product.checked);
+    setproductsNotPurchased(filterByChecked);
+    setOpenModal(true);
+    console.log(filterByChecked.length)
+  }
+
+  const finishCanceled = () => {
+    setOpenModal(false);
+    setproductsNotPurchased([]);
+  }
+
+  const finishConfirmed = (valueTotal: string) => {
+    // criar lógica para finalizar a lista e enviar os dados da lista para o banco de dados
+    console.log(valueTotal);
+    setOpenModal(false);
+    console.log(listProducts)
   }
 
   useEffect(() => {
@@ -59,8 +79,16 @@ const MainPage: React.FC = () => {
         minHeight: '100vh',
       }}>
         {listProducts.length ? listProducts.map((product: any, i: number) => {
-          return <RenderProduct key={i} product={product} disabled={disabled} />
+          return <RenderProduct key={i} product={product} />
           }) : <Typography>Lista Vazia</Typography>}
+          {openModal ? (
+            <FinishListModal
+              list={productsNotPurchased}
+              listName={localStorage.getItem('listName') as string}
+              confirmed={finishConfirmed}
+              canceled={finishCanceled}
+            />
+          ) : null}
         <Box
           sx={{
             display: 'flex',
@@ -72,27 +100,25 @@ const MainPage: React.FC = () => {
           }}
         >
           <Button
-            variant={disabled ? 'contained' : 'outlined'}
+            variant='contained'
             sx={{
               margin: '0 auto 0 auto',
               width: '45%',
               height: '7vh',
               color: '#fff',
             }}
-            onClick={() => { setDisabled(false); console.log('Botão editar clicado'); }}
-            disabled={!disabled}
-          >Editar</Button>
+            onClick={saveList}
+          >Salvar</Button>
           <Button
-            variant={disabled ? 'outlined' : 'contained'}
+            variant='contained'
             sx={{
               margin: '0 auto 0 auto',
               width: '45%',
               height: '7vh',
               color: '#fff',
           }}
-            onClick={saveList}
-            disabled={disabled}
-          >Salvar</Button>
+            onClick={handleFinish}
+          >Finalizar</Button>
         </Box>
       </Box>
     )
