@@ -18,16 +18,26 @@ const MainPage: React.FC = () => {
 
   const requestListProducts = async () => {
     try {
-      const { token } = JSON.parse(localStorage.getItem('userData') as string);
-      const response = await requestApi.get('/products', { headers: {
-        authorization: token,
-      } });
+      const listProductsLocalStorage = localStorage.getItem('listProducts');
+      if (listProductsLocalStorage) {
+        setListProducts(JSON.parse(listProductsLocalStorage));
+        setIsLoading(false);
+      } else {
+        const { token } = JSON.parse(localStorage.getItem('userData') as string);
+        const response = await requestApi.get('/products', { headers: {
+          authorization: token,
+        } });
 
-      const list = response.data.message[0].lists
-      localStorage.setItem('listName', list[list.length - 1].listName);
-      localStorage.setItem('listProducts', JSON.stringify(list[list.length - 1].productsList));
-      setListProducts(list[list.length - 1].productsList);
-      setIsLoading(false);
+        const list = response.data.message[0].lists;
+        localStorage.setItem('listName', list[list.length - 1].listName);
+        localStorage.setItem('listProducts', JSON.stringify(list[list.length - 1].productsList));
+        const listHistory = list.splice(0, list.length - 1);
+        // juntando os dois arrays (history e última lista)
+        // console.log([...listHistory, ...list]);
+        localStorage.setItem('listHistoryProducts', JSON.stringify(listHistory));
+        setListProducts(list[list.length - 1].productsList);
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log('error', error)
       alert("Usuário não autenticado");
@@ -36,17 +46,20 @@ const MainPage: React.FC = () => {
   };
 
   const saveList = () => {
+    setIsLoading(true);
     localStorage.setItem('listProducts', JSON.stringify(listProducts));
-    const listName = localStorage.getItem('listName') as string;
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 400);
+    // const listName = localStorage.getItem('listName') as string;
     // validar se realmente foi salvo no banco de dados
-    updateUserList({ listName, productsList: listProducts })
+    // updateUserList({ listName, productsList: listProducts })
   }
 
   const handleFinish = () => {
     const filterByChecked = listProducts.filter((product: any) => !product.checked);
     setproductsNotPurchased(filterByChecked);
     setOpenModal(true);
-    console.log(filterByChecked.length)
   }
 
   const finishCanceled = () => {
@@ -54,11 +67,23 @@ const MainPage: React.FC = () => {
     setproductsNotPurchased([]);
   }
 
-  const finishConfirmed = (valueTotal: string) => {
-    // criar lógica para finalizar a lista e enviar os dados da lista para o banco de dados
-    console.log(valueTotal);
+  const finishConfirmed = (totalValue: string) => {
+    const infosList = {
+      listName: localStorage.getItem('listName') as string,
+      totalValue,
+      productsList: listProducts,
+    }
+    const list = localStorage.getItem('listHistoryProducts');
+    const newListHistory = [...JSON.parse(list), infosList, infosList];
     setOpenModal(false);
-    console.log(listProducts)
+    localStorage.removeItem('listProducts');
+    localStorage.removeItem('listName');
+    localStorage.setItem('listHistoryProducts', JSON.stringify(newListHistory));
+    setListProducts([]);
+    // criação de lógica para salvar a lista no banco de dados
+    // atualizar a página ou chamar a função requestListProducts
+    // 1° opção: setIsLoading(true); requestListProducts();
+    // 2° opção: window.location.reload();
   }
 
   useEffect(() => {
@@ -76,11 +101,11 @@ const MainPage: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        minHeight: '100vh',
+        height: '78vh',
       }}>
         {listProducts.length ? listProducts.map((product: any, i: number) => {
           return <RenderProduct key={i} product={product} />
-          }) : <Typography>Lista Vazia</Typography>}
+          }) : <Typography sx={{ alignSelf: 'center', display: 'flex', color: '#fff' }}>Crie uma nova lista</Typography>}
           {openModal ? (
             <FinishListModal
               list={productsNotPurchased}
@@ -103,8 +128,8 @@ const MainPage: React.FC = () => {
             variant='contained'
             sx={{
               margin: '0 auto 0 auto',
-              width: '45%',
-              height: '7vh',
+              width: '30%',
+              height: '4vh',
               color: '#fff',
             }}
             onClick={saveList}
@@ -113,8 +138,8 @@ const MainPage: React.FC = () => {
             variant='contained'
             sx={{
               margin: '0 auto 0 auto',
-              width: '45%',
-              height: '7vh',
+              width: '30%',
+              height: '4vh',
               color: '#fff',
           }}
             onClick={handleFinish}

@@ -5,19 +5,30 @@ import '../style/loginPage.css';
 import { Box, Collapse, Tooltip, Typography } from '@mui/material';
 import ProfileForm from './Forms/ProfileForm';
 import { ArrowDropDown, ArrowDropUp, Check, Edit } from '@mui/icons-material';
+import RenderHistoryProduct from './HistoryList';
+
 
 const Profile = () => {
+  const { user } = UserInfosProvider();
   const [openPersonalInfos, setOpenPersonaInfos] = useState<boolean>(false);
   const [openPersonalization, setOpenPersonalization] = useState<boolean>(false);
   const [openHistory, setOpenHistory] = useState<boolean>(false);
   const [infosUpdated, setInfosUpdated] = useState<boolean>(false);
-  const { user } = UserInfosProvider();
+  const [listProductsHistory, setListProductsHistory] = useState<any>([]);
 
   useEffect(() => {
     setTimeout(() => {
       setInfosUpdated(false);
     }, 3000)
   }, [infosUpdated])
+
+  useEffect(() => {
+    // pegar lista de produtos no localStorage
+    const list = localStorage.getItem('listHistoryProducts');
+    if (list) {
+      setListProductsHistory(JSON.parse(list));
+    }
+  }, [])
 
   return (
     <Box
@@ -123,7 +134,7 @@ const Profile = () => {
               backgroundColor: 'rgba(255, 255, 255, 0.7)',
               borderRadius: '8px 8px 2px 2px',
               padding: 1.5,
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onClick={() => setOpenHistory(!openHistory)}
           >
@@ -138,17 +149,18 @@ const Profile = () => {
             in={openHistory}
             timeout={600}
           >
-            {/* Componente de Histórico */}
             <Box
               sx={{
                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                color: 'white',
                 padding: 1,
+                maxHeight: '330px',
+                overflowY: 'auto',
               }}
             >
-              Histórico
+              {/* Componente de Personalização */}
+              {listProductsHistory.map((list: any, i: number) => (<RenderHistoryProduct key={i} list={list} />))}
+              {/* Componente de Personalização */}
             </Box>
-            {/* Componente de Histórico */}
           </Collapse>
         </Box>
       </Box>

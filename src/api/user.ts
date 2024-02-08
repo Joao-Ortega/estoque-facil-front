@@ -31,6 +31,8 @@ export const createNewUserList = async (list: IListInfo) => {
   }
 }
 
+// usar essa função para finalizar uma lista
+// obs: não está sendo usando no projeto
 export const updateUserList = async (list: IListInfo) => {
   // console.log(list)
   // console.log(`${'/products'}/${list.listName}`)
