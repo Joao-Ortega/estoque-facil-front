@@ -20,7 +20,6 @@ const MainPage: React.FC = () => {
     try {
       const listProductsLocalStorage = localStorage.getItem('listProducts');
       if (listProductsLocalStorage) {
-        console.log('entrei aqui');
         setListProducts(JSON.parse(listProductsLocalStorage));
         setIsLoading(false);
       } else {
@@ -29,9 +28,13 @@ const MainPage: React.FC = () => {
           authorization: token,
         } });
 
-        const list = response.data.message[0].lists
+        const list = response.data.message[0].lists;
         localStorage.setItem('listName', list[list.length - 1].listName);
         localStorage.setItem('listProducts', JSON.stringify(list[list.length - 1].productsList));
+        const listHistory = list.splice(0, list.length - 1);
+        // juntando os dois arrays (history e última lista)
+        // console.log([...listHistory, ...list]);
+        localStorage.setItem('listHistoryProducts', JSON.stringify(listHistory));
         setListProducts(list[list.length - 1].productsList);
         setIsLoading(false);
       }
@@ -64,16 +67,19 @@ const MainPage: React.FC = () => {
     setproductsNotPurchased([]);
   }
 
-  const finishConfirmed = (valueTotal: string) => {
+  const finishConfirmed = (totalValue: string) => {
     const infosList = {
       listName: localStorage.getItem('listName') as string,
-      valueTotal,
+      totalValue,
       productsList: listProducts,
     }
-    console.log(infosList);
+    const list = localStorage.getItem('listHistoryProducts');
+    const newListHistory = [...JSON.parse(list), infosList, infosList];
     setOpenModal(false);
     localStorage.removeItem('listProducts');
     localStorage.removeItem('listName');
+    localStorage.setItem('listHistoryProducts', JSON.stringify(newListHistory));
+    setListProducts([]);
     // criação de lógica para salvar a lista no banco de dados
     // atualizar a página ou chamar a função requestListProducts
     // 1° opção: setIsLoading(true); requestListProducts();
@@ -95,11 +101,11 @@ const MainPage: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        minHeight: '100vh',
+        height: '78vh',
       }}>
         {listProducts.length ? listProducts.map((product: any, i: number) => {
           return <RenderProduct key={i} product={product} />
-          }) : <Typography>Lista Vazia</Typography>}
+          }) : <Typography sx={{ alignSelf: 'center', display: 'flex', color: '#fff' }}>Crie uma nova lista</Typography>}
           {openModal ? (
             <FinishListModal
               list={productsNotPurchased}
@@ -122,8 +128,8 @@ const MainPage: React.FC = () => {
             variant='contained'
             sx={{
               margin: '0 auto 0 auto',
-              width: '45%',
-              height: '7vh',
+              width: '30%',
+              height: '4vh',
               color: '#fff',
             }}
             onClick={saveList}
@@ -132,8 +138,8 @@ const MainPage: React.FC = () => {
             variant='contained'
             sx={{
               margin: '0 auto 0 auto',
-              width: '45%',
-              height: '7vh',
+              width: '30%',
+              height: '4vh',
               color: '#fff',
           }}
             onClick={handleFinish}

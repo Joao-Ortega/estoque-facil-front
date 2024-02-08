@@ -11,6 +11,7 @@ const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProduc
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
+    // console.log(window.location.pathname);
     setChecked(product.checked);
   }, []);
 
@@ -40,19 +41,21 @@ const RenderProduct: React.FC<IRenderProductProps> = ({ product }: IRenderProduc
             alignItems: 'center',
           }}
         >
-        <Checkbox
-          sx={{
-            color: green[800],
-            '&.Mui-checked': {
-              color: green[600],
-            },
-            width: '30px',
-            height: '30px',
-          }}
-          checked={checked}
-          onChange={handleChange}
-          inputProps={{ 'aria-label': 'controlled' }}
-        ></Checkbox>
+          {window.location.pathname !== '/newList' ? (
+            <Checkbox
+              sx={{
+                color: green[800],
+                '&.Mui-checked': {
+                  color: green[600],
+                },
+                width: '30px',
+                height: '30px',
+              }}
+              checked={checked}
+              onChange={handleChange}
+              inputProps={{ 'aria-label': 'controlled' }}
+            ></Checkbox>
+          ) : null}
         </Box>
         <CardContent
           sx={{

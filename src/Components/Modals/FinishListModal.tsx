@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox, List, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { IProduct } from "../../interfaces/products";
 import { ChangeEvent, FormEvent, MouseEventHandler, useState } from "react";
+import './finishStyleModal.css';
 
 interface FinishListModalProps {
   list: IProduct[];
@@ -40,7 +41,7 @@ const FinishListModal = ({ list, listName, confirmed, canceled }: FinishListModa
   return (
     <Box
       sx={{
-        height: '60vh',
+        height: '55vh',
         width: '90%',
         backgroundColor: '#DCDCDC',
         borderRadius: '10px',
@@ -189,8 +190,8 @@ const FinishListModal = ({ list, listName, confirmed, canceled }: FinishListModa
           variant='contained'
           sx={{
             margin: '0 auto 0 auto',
-            width: '45%',
-            height: '7vh',
+            width: '30%',
+            height: '4vh',
             color: '#fff',
           }}
           onClick={canceled}
@@ -200,8 +201,8 @@ const FinishListModal = ({ list, listName, confirmed, canceled }: FinishListModa
           disabled={disabled}
           sx={{
             margin: '0 auto 0 auto',
-            width: '45%',
-            height: '7vh',
+            width: '30%',
+            height: '4vh',
             color: '#fff',
           }}
           onClick={() => {confirmed(totalValue)}}

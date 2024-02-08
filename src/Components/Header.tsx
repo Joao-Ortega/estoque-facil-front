@@ -48,6 +48,7 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
         justifyContent: 'space-around',
         position: 'fixed',
         top: 0,
+        zIndex: 1,
         width: '100vw',
         height: '8vh',
       }}
@@ -58,7 +59,6 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
           alignItems: 'center',
           textAlign: 'center',
           justifyContent: 'space-evenly',
-          // border: '1px solid green',
           width: '70%'
         }}
       >
@@ -81,9 +81,7 @@ const Header: React.FC<Iprops> = ({ title, page }: Iprops) => {
           <Typography sx={{ minWidth: 100 }}>Criar Lista</Typography>
         </Box>
       </Box>
-      <Box
-        // sx={{ border: '1px solid red' }}
-      >
+      <Box>
         <Tooltip title="Configurações de Perfil">
           <IconButton
             onClick={handleClick}
