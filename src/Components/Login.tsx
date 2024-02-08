@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/router';
 import requestApi from '../api/axios';
@@ -20,6 +20,11 @@ export default function Login() {
       console.log('catch => error', error)
     }
   };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') handleClick();
+  }
+
   return (
     <Box
       display="flex"
@@ -59,6 +64,7 @@ export default function Login() {
           value={ email }
           required
           onChange={({ target }) => { setEmail(target.value) }}
+          onKeyDown={handleKeyPress}
           sx={{ margin: "1%", borderRadius: "2%", backgroundColor: "rgba(255, 255, 255, 0.7)" }}
         />
         <TextField
@@ -67,11 +73,13 @@ export default function Login() {
           variant="filled"
           value={ password }
           onChange={({ target }) =>  setPassword(target.value) }
+          onKeyDown={handleKeyPress}
           required
           sx={{ margin: "1%", borderRadius: "2%", backgroundColor: "rgba(255, 255, 255, 0.7)" }}
         />
         <Button
           onClick={handleClick}
+          type="submit"
           sx={{ margin: "1%", color: "white", fontFamily: 'Kalam, cursive', }}
         >
           Entrar
