@@ -74,7 +74,7 @@ const MainPage: React.FC = () => {
       productsList: listProducts,
     }
     const list = localStorage.getItem('listHistoryProducts');
-    const newListHistory = [...JSON.parse(list), infosList, infosList];
+    const newListHistory = [...JSON.parse(list), infosList];
     setOpenModal(false);
     localStorage.removeItem('listProducts');
     localStorage.removeItem('listName');

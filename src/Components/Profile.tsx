@@ -34,7 +34,7 @@ const Profile = () => {
     <Box
       sx={{
         overflowY: 'auto',
-        height: '100vh',
+        height: '85vh',
         marginTop: 8,
       }}
     >
@@ -153,7 +153,7 @@ const Profile = () => {
               sx={{
                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
                 padding: 1,
-                maxHeight: '330px',
+                // maxHeight: '330px',
                 overflowY: 'auto',
               }}
             >
